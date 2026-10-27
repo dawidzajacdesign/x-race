@@ -31,8 +31,8 @@ module.exports = async (req, res) => {
   const driver = typ === 'kierowca';
 
   const errors = [];
-  if (!d.imie) errors.push('imie');
   if (!d.miasto) errors.push('miasto');
+  if (!/^[+0-9 ()\-]{9,30}$/.test(d.telefon)) errors.push('telefon');
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) errors.push('email');
   if (!driver && !d.firma) errors.push('firma');
   if (d.nip && !/^[0-9 \-]{10,13}$/.test(d.nip)) errors.push('nip');
@@ -47,18 +47,18 @@ module.exports = async (req, res) => {
 
   const rows = [
     ['Kim jest', TYPES[typ]],
-    ['Imię i nazwisko', d.imie],
+    d.imie && ['Imię i nazwisko', d.imie],
     !driver && ['Firma', d.firma],
     !driver && d.nip && ['NIP', d.nip],
     ['Miejscowość', d.miasto],
     ['E-mail', d.email],
-    d.telefon && ['Telefon', d.telefon],
+    ['Telefon', d.telefon],
     [driver ? 'Auto' : 'Wiadomość', d.wiadomosc || '(brak)'],
     ['Zgoda na przetwarzanie danych', 'tak'],
     ['Wysłano ze strony', d.strona || '-'],
   ].filter(Boolean);
 
-  const subject = `X-Race: ${TYPES[typ]} – ${driver ? d.imie : d.firma} (${d.miasto})`;
+  const subject = `X-Race: ${TYPES[typ]} – ${driver ? (d.imie || d.email) : d.firma} (${d.miasto})`;
   const text = rows.map(([k, v]) => `${k}: ${v}`).join('\n');
   const html = `<h2 style="font-family:Arial,sans-serif">Nowe zapytanie X-Race</h2><table style="font-family:Arial,sans-serif;font-size:14px;border-collapse:collapse">${
     rows.map(([k, v]) => `<tr><td style="padding:6px 14px 6px 0;color:#666;vertical-align:top">${esc(k)}</td><td style="padding:6px 0;white-space:pre-wrap">${esc(String(v))}</td></tr>`).join('')

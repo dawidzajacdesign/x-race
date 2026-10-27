@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Po podpięciu docelowej subdomeny zamień adres; przy wersjach językowych dodaj wpisy z xhtml:link hreflang. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://x-race.vercel.app/</loc>
+    <lastmod>2026-10-27</lastmod>
+  </url>
+</urlset>

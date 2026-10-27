@@ -122,14 +122,14 @@ const Embers=(function(){
 /* ---------- manifesto words ---------- */
 const mText=$('#mText');
 const words=[];
-(function(){const raw=mText.textContent.trim().split(/\s+/);mText.textContent='';
+(function(){const raw=mText.textContent.trim().split(/[^\S ]+/);mText.textContent='';   // non-breaking spaces (no orphans) keep short words glued to the next one
   raw.forEach((w,i)=>{const red=w.startsWith('*');const sp=document.createElement('span');sp.className='w'+(red?' r':'');sp.textContent=w.replace(/\*/g,'');mText.appendChild(sp);if(i<raw.length-1)mText.appendChild(document.createTextNode(' '));words.push(sp);});})();
 
 /* ---------- elements ---------- */
 const manifest=$('#manifest'), heat=$('#heat'), heatImg=$('#heatPh img'), steps=$$('.heat-copy .step'), gauge=$('#gauge'), gaugeLbl=$('#gaugeLbl');
 $$('.xscene').forEach(el=>{const f=el.querySelector('.fullbox img[data-same]'),src=el.querySelector('.clip img');if(f&&src)f.src=src.currentSrc||src.src;});
-const xscenes=$$('.xscene').map(el=>({el,full:el.querySelector('.fullbox'),fimg:el.querySelector('.fullbox img'),fcall:[...el.querySelectorAll('.fullbox .callout')],copy:el.querySelector('.dcopy'),stage:el.querySelector('.stage'),media:el.querySelector('.dmedia'),clip:el.querySelector('.clip'),img:el.querySelector('.clip img'),xo:el.querySelector('.xo'),polys:[...el.querySelectorAll('.xo polygon')],callouts:[],subs:[...el.querySelectorAll('.sub')]}));
-const linia=$('#linia'), linePh=$('#linePh'), lineImg=$('#linePh img'), lineXo=$('#lineXo'), linePolys=$$('#lineXo polygon'), lineCopy=$('#lineCopy'), lineTag=$('#lineTag');
+const xscenes=$$('.xscene').map(el=>({el,full:el.querySelector('.fullbox'),fimg:el.querySelector('.fullbox img'),fcall:[...el.querySelectorAll('.fullbox .callout')],copy:el.querySelector('.dcopy'),stage:el.querySelector('.stage'),media:el.querySelector('.dmedia'),clip:el.querySelector('.clip'),img:el.querySelector('.clip img'),xo:el.querySelector('.xo'),polys:[...el.querySelectorAll('.xo polygon')],callouts:[],subs:[...el.querySelectorAll('.sub')],mix:el.querySelector('.mix'),bars:[...el.querySelectorAll('.mix .row i')]}));
+const linia=$('#linia'), lineSet=$('#lineSet'), lineSets=$$('#lineSet .ls'), lineTag=$('#lineTag');
 const hero=$('#top'), heroImg=$('.hero .ph video')||$('.hero .ph img'), contact=$('#kontakt');
 const fills=$$('[data-fill]');
 const hsSec=$('.icons.hs'), hsTrack=hsSec?hsSec.querySelector('.igrid'):null;
@@ -177,8 +177,10 @@ function update(){
       S.xo.style.opacity=(1-clamp((dp-.24)/.08)).toFixed(3);
       S.callouts.forEach(c=>c.classList.toggle('on',dp>=+c.dataset.at));
       S.subs.forEach(c=>c.classList.toggle('on',dp/.6>=+c.dataset.at));
+      // friction-mix bars fill with the scroll, one after another, before the photo takes over at .36
+      if(S.mix){S.mix.classList.add('scroll');S.bars.forEach((b,i)=>b.style.setProperty('--p',clamp((dp-.50-i*.05)/.05).toFixed(3)));}
       // grow the photo from its place in the layout to the whole screen
-      const g=ease(clamp((dp-.36)/.18));
+      const g=ease(clamp((dp-.75)/.11));
       const sr=S.stage.getBoundingClientRect(), mr=S.media.getBoundingClientRect();
       // target: 70% of the screen width, keeping the photo's proportions, centred (and never taller than 86% of the screen)
       const ar=(+S.fimg.dataset.w)/(+S.fimg.dataset.h);
@@ -186,14 +188,15 @@ function update(){
       const tl=(sr.width-tw)/2, tt=(sr.height-th)/2+30;
       const L=lerp(mr.left-sr.left,tl,g), T=lerp(mr.top-sr.top,tt,g), BW=lerp(mr.width,tw,g), BH=lerp(mr.height,th,g);
       const F=S.full; F.style.left=L+'px'; F.style.top=T+'px'; F.style.width=BW+'px'; F.style.height=BH+'px';
-      const big=dp>=.355; F.style.opacity=big?1:0; F.style.setProperty('--vg',g.toFixed(3));
+      const big=dp>=.745; F.style.opacity=big?1:0; F.style.setProperty('--vg',g.toFixed(3));
       S.media.style.visibility=big?'hidden':'visible';
       F.classList.toggle('dim',g>=1&&S.fcall.some(c=>dp>=+c.dataset.at));   // photo dims to 70% once the dots start appearing   // one photo only: the framed one hands over to the growing one, no duplicate
-      S.copy.style.opacity=(1-clamp((dp-.36)/.1)).toFixed(3);
+      S.copy.style.opacity=(1-clamp((dp-.75)/.08)).toFixed(3);
       // dots sit on fixed points of the photo (image-space), mapped through object-fit: cover
       const iw=+S.fimg.dataset.w, ih=+S.fimg.dataset.h, sc=Math.max(BW/iw,BH/ih), ox=(BW-iw*sc)/2, oy=(BH-ih*sc)/2;
       S.fcall.forEach(c=>{c.style.left=(ox+ +c.dataset.ix*iw*sc).toFixed(1)+'px';c.style.top=(oy+ +c.dataset.iy*ih*sc).toFixed(1)+'px';c.classList.toggle('on',g>=1&&dp>=+c.dataset.at);});
     }else{
+      if(S.mix){S.mix.classList.remove('scroll');S.bars.forEach(b=>b.style.removeProperty('--p'));}
       S.clip.style.clipPath='none'; S.img.style.setProperty('--z',1); S.xo.style.opacity=0; if(S.copy) S.copy.style.opacity=1; S.media.style.visibility='visible';
       S.subs.forEach(c=>{if(c.getBoundingClientRect().top<vh*.9)c.classList.add('on');});
     }
@@ -234,26 +237,35 @@ function update(){
   //   0.00-0.36  the three box claims fill one after another
   //   0.38-0.56  zoom-and-dissolve: claims scale up, blur and fade while "Jedna linia" fades in behind them
   //   0.56-1.00  the X opens on the product line photo (previous behaviour)
-  const q=sceneP(linia), n=fills.length;
+  // the section got longer for the products; claims keep their old scroll distance (340vh of 480vh)
+  const q=sceneP(linia)*480/340, n=fills.length;
   fills.forEach((el,i)=>{const a=.03+i*(.33/n), b=a+.33/n; el.style.setProperty('--f',(clamp((q-a)/(b-a))*100).toFixed(1)+'%');});
   const z=ease(clamp((q-.38)/.18));
   const cl=$('#claimsLayer');
   cl.style.setProperty('--cz',(1+z*2.6).toFixed(3)); cl.style.setProperty('--co',(1-z).toFixed(3)); cl.style.setProperty('--cb',(z*8).toFixed(1)+'px');
   cl.style.visibility=z>=1?'hidden':'visible';
-  const lp=clamp((q-.56)/.44); const W=innerWidth, H=vh;
-  lineXo.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  const grow=ease(clamp(lp/.4)), open=ease(clamp((lp-.38)/.4));
-  const side=Math.min(W,H)*.78;
-  const bw=lerp(side*grow,W*1.04,open), bh=lerp(side*grow,H*1.04,open);
-  const lpts=mapPts(xPts(lerp(14,50,open)),W/2,H/2,bw,bh);
-  linePh.style.clipPath=toClip(lpts,'px');
-  lineImg.style.setProperty('--z',lerp(1.3,1.02,easeOut(lp)).toFixed(3));
-  linePolys[0].setAttribute('points',toAttr(lpts));
-  linePolys[1].setAttribute('points',toAttr(mapPts(xPts(Math.min(50,lerp(14,50,open)+4)),W/2+bw*.03,H/2+bh*.03,bw*1.07,bh*1.07)));
-  lineXo.style.opacity=grow>0?(1-open):0;
-  lineTag.style.setProperty('--t',(z*(1-clamp(lp/.25))).toFixed(3)); lineTag.style.setProperty('--ts',(0.6+0.4*z).toFixed(3));
-  lineCopy.style.setProperty('--o',clamp((lp-.72)/.18).toFixed(3));
-  { const ln=$('#lineNote'); if(ln) ln.style.setProperty('--o',clamp((lp-.72)/.18).toFixed(3)); }
+  // product layers, one after another (box, drum, disc, pads): each starts centred on screen, large, blurred and dark,
+  // then shrinks into its place while it sharpens and brightens. The box starts filling the viewport, the rest start smaller.
+  const lp=clamp((q-.56)/(480/340-.56));
+  lineSet.style.setProperty('--gs',lerp(1.12,.9,ease(clamp((lp-.2)/.8))).toFixed(3));
+  { const gs=+lineSet.style.getPropertyValue('--gs')||1, W=lineSet.offsetWidth, H=lineSet.offsetHeight, cy=vh*.61;
+    lineSets.forEach((el,i)=>{
+      const a=i?.3+i*.13:.2, s=ease(clamp((lp-a)/(i?.3:.28)));
+      const ew=el.offsetWidth, eh=el.offsetHeight;
+      const fx=innerWidth/2+(el.offsetLeft+ew/2-W/2)*gs, fy=cy+(el.offsetTop+eh/2-H/2)*gs;
+      const k=i?1.2:Math.max(innerWidth/(ew*gs), vh/(eh*gs))*1.05;
+      // only the box travels from the centre; the rest shrink in place from their top-left corner (see CSS)
+      // the pads (last) slide in from the left, starting 25% of the set's width before their place
+      const offL=-W*.25;
+      el.style.setProperty('--fx',(i===3?offL*(1-s):i?0:(innerWidth/2-fx)/gs*(1-s)).toFixed(1)+'px');
+      el.style.setProperty('--fy',(i?0:(vh/2-fy)/gs*(1-s)).toFixed(1)+'px');
+      el.style.setProperty('--ls',lerp(k,1,s).toFixed(3));
+      el.style.setProperty('--lo',clamp((lp-a)/.04).toFixed(3)); el.style.setProperty('--lb',(24*(1-s)).toFixed(1)+'px');
+      el.style.setProperty('--lv',(.2+.8*s).toFixed(3));}); }
+  // tag rises from the centre to the top and stays above the products
+  const up=ease(clamp(lp/.3));
+  lineTag.style.top=lerp(50,26,up).toFixed(2)+'%'; lineTag.style.setProperty('--tf',up.toFixed(3)); lineTag.style.setProperty('--sk',(-14*up).toFixed(2)+'deg'); lineTag.style.setProperty('--lz',(1+.3*up).toFixed(3));
+  lineTag.style.setProperty('--t',z.toFixed(3)); lineTag.style.setProperty('--ts',(0.6+0.4*z).toFixed(3));
 
   // rail
   let cur=0; chapters.forEach((c,i)=>{if(c&&c.getBoundingClientRect().top<vh*.5)cur=i;});
@@ -266,7 +278,7 @@ function update(){
     ts=.85*heroVis; tsy=.42; tf=.32*heroVis; th=.2;
     const inHeat=heat.getBoundingClientRect(); const heatOn=inHeat.top<vh*.6&&inHeat.bottom>vh*.4;
     if(heatOn){tf=lerp(.25,.85,clamp(hp2/.8));th=lerp(.18,.38,clamp(hp2/.8));ts=.25;tsy=.75;tt=1.4;}
-    const lr=linia.getBoundingClientRect(); if(lr.top<vh*.5&&lr.bottom>vh*.5){tf=.35*(1-open)+.15;th=.22;}
+    const lr=linia.getBoundingClientRect(); if(lr.top<vh*.5&&lr.bottom>vh*.5){tf=.35*(1-clamp(lp/.6))+.15;th=.22;}
     const br=$('#hamuj'); if(br){const r=br.getBoundingClientRect(); if(r.top<vh*.7&&r.bottom>vh*.2){const c=clamp((vh*.7-r.top)/(vh*.5));tf=Math.max(tf,.55*c);th=.3;ts=Math.max(ts,.35*c);tsy=.55;}}
     const cr=contact.getBoundingClientRect(); if(cr.top<vh*.7){const c=clamp((vh*.7-cr.top)/(vh*.6));tf=Math.max(tf,.55*c);th=.3;ts=Math.max(ts,.35*c);tsy=.55;}
     // the form needs to stay readable: the fire dies down while it is on screen
@@ -334,7 +346,7 @@ if(hv){
   io.observe(h);})();
 
 /* copy e-mail */
-$('#copyMail').addEventListener('click',e=>{
+$('#copyMail')?.addEventListener('click',e=>{
   const b=e.currentTarget, el=$('#mail');
   const done=t=>{b.textContent=t;setTimeout(()=>b.textContent='Kopiuj adres',1600);};
   const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);done('Zaznaczono');};
@@ -471,30 +483,41 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
 /* ---------- inquiry form ---------- */
 (function(){
   const form=$('#xform'); if(!form) return;
-  const status=$('#fstatus'), btn=$('#xsend'), b2b=$$('.b2b-only'), msgLbl=$('#msgLbl'), msg=form.elements.wiadomosc;
+  const status=$('#fstatus'), btn=$('#xsend'), b2b=$$('.b2b-only'), drv=$$('.driver-only'), msgLbl=$('#msgLbl'), msg=form.elements.wiadomosc;
   const MAIL='hart@hartphp.com.pl';
+  // the form adapts to who is asking: fields, perks above the form, message hint and the button label
   function setTyp(v){
     const r=form.querySelector(`input[name="typ"][value="${v}"]`); if(r) r.checked=true;
     const driver=v==='kierowca';
-    b2b.forEach(l=>{l.hidden=driver;const i=l.querySelector('input');if(i.name==='firma')i.required=!driver;});
-    msgLbl.textContent=driver?'Jakim autem jeździsz?':'Wiadomość';
-    msg.placeholder=driver?'Marka, model, rocznik i silnik, np. Volkswagen Golf VII GTI 2.0 TSI 2016':'Np. jakie marki aut obsługujesz, jakich ilości się spodziewasz';
+    form.classList.toggle('driver',driver);
+    b2b.forEach(l=>{l.hidden=driver;const i=l.querySelector('input');if(i&&i.name==='firma')i.required=!driver;});
+    drv.forEach(l=>{l.hidden=!driver;});
+    msgLbl.textContent=driver?'Jakim autem jeździsz?':'Czego potrzebujesz? (opcjonalnie)';
+    msg.placeholder=driver?'Marka, model, rocznik i silnik, np. Volkswagen Golf VII GTI 2.0 TSI 2016':'Np. marki aut, które obsługujesz, albo przybliżone ilości';
+    btn.textContent=driver?'Sprawdź, gdzie kupić':'Wyślij zapytanie o ofertę';
   }
   form.addEventListener('change',e=>{if(e.target.name==='typ')setTyp(e.target.value);});
+  // a field marked wrong is cleared as soon as it's fixed, not only on the next submit
+  form.addEventListener('input',e=>{if(e.target.checkValidity&&e.target.checkValidity())e.target.removeAttribute('aria-invalid');});
+  let started=false; form.addEventListener('focusin',()=>{if(!started){started=true;track('xrace_form_start');}});
   // CTAs elsewhere on the page pick the right path before scrolling to the form
   $$('a[data-typ]').forEach(a=>a.addEventListener('click',()=>{setTyp(a.dataset.typ);track('xrace_cta',{typ:a.dataset.typ});}));
   setTyp((form.querySelector('input[name="typ"]:checked')||{}).value||'sklep');
 
   const say=(t,kind)=>{status.textContent=t;status.className='fstatus'+(kind?' '+kind:'');};
   function mailtoHref(d){
-    const body=[`Kim jestem: ${d.typ}`,`Imię i nazwisko: ${d.imie}`,d.firma&&`Firma: ${d.firma}`,d.nip&&`NIP: ${d.nip}`,`Miejscowość: ${d.miasto}`,`E-mail: ${d.email}`,d.telefon&&`Telefon: ${d.telefon}`,'',d.wiadomosc||''].filter(x=>x!==false&&x!==undefined&&x!=='').join('\n');
+    const body=[`Kim jestem: ${d.typ}`,d.firma&&`Firma: ${d.firma}`,`Miejscowość: ${d.miasto}`,`E-mail: ${d.email}`,d.telefon&&`Telefon: ${d.telefon}`,'',d.wiadomosc||''].filter(x=>x!==false&&x!==undefined&&x!=='').join('\n');
     return `mailto:${MAIL}?subject=${encodeURIComponent('X-Race: zapytanie ze strony')}&body=${encodeURIComponent(body)}`;
   }
   form.addEventListener('submit',async e=>{
     e.preventDefault();
     form.classList.add('tried');
     const bad=[...form.querySelectorAll('input,textarea')].find(i=>!i.closest('[hidden]')&&!i.checkValidity());
-    if(bad){say(bad.type==='checkbox'?'Zaznacz zgodę na przetwarzanie danych, żebyśmy mogli odpowiedzieć.':bad.validity.typeMismatch?'Sprawdź adres e-mail.':bad.validity.patternMismatch?'NIP powinien mieć 10 cyfr.':'Uzupełnij pola oznaczone gwiazdką.','err');bad.focus();return;}
+    if(bad){
+      bad.setAttribute('aria-invalid','true');
+      const name=((bad.closest('label')||{}).querySelector?.('span')?.firstChild?.textContent||'').replace('*','').trim();
+      say(bad.type==='checkbox'?'Zaznacz zgodę, żebyśmy mogli odpowiedzieć.':bad.validity.typeMismatch?'Sprawdź adres e-mail, np. jan@firma.pl.':bad.name==='telefon'&&bad.value?'Sprawdź numer telefonu, np. 600 123 456.':`Uzupełnij pole „${name}”.`,'err');
+      bad.focus();return;}
     const d=Object.fromEntries(new FormData(form).entries());
     if(d.typ==='kierowca'){delete d.firma;delete d.nip;}
     d.zgoda=!!d.zgoda; d.strona=location.href;
@@ -503,11 +526,12 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
       const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
       if(!res.ok) throw new Error('HTTP '+res.status);
       track('xrace_form_submit',{typ:d.typ});
-      form.innerHTML='<div class="fdone"><h3>Dziękujemy!</h3><p>Zapytanie dotarło do HART. Odpowiemy na podany adres e-mail.</p></div>';
+      $$('.fperks').forEach(u=>u.hidden=true);
+      form.innerHTML='<div class="fdone"><h3>Dziękujemy!</h3><p>Zapytanie dotarło do&nbsp;HART. Przekażemy je do&nbsp;filii najbliżej Ciebie, a&nbsp;opiekun odpowie na&nbsp;podany adres e-mail w&nbsp;dni robocze.</p><p>Pilna sprawa? Zadzwoń: <a href="tel:+48774539626">77&nbsp;453&nbsp;96&nbsp;26</a></p></div>';
     }catch(err){
       btn.disabled=false;
       say('','err');
-      status.innerHTML='Nie udało się wysłać formularza. <a href="">Wyślij to samo zapytanie e-mailem</a> albo zadzwoń: 77 453 96 26.';
+      status.innerHTML='Nie&nbsp;udało się wysłać formularza. <a href="">Wyślij to&nbsp;samo zapytanie e-mailem</a> albo zadzwoń: 77&nbsp;453&nbsp;96&nbsp;26.';
       status.querySelector('a').href=mailtoHref(d);
       track('xrace_form_error',{typ:d.typ});
     }
