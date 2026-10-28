@@ -124,7 +124,7 @@
   <div class="stage">
     <svg class="mx" viewBox="0 0 64 64" aria-hidden="true"><polygon class="mx-base" points="5.0,5.0 13.1,5.0 32.0,23.9 50.9,5.0 59.0,5.0 59.0,13.1 40.1,32.0 59.0,50.9 59.0,59.0 50.9,59.0 32.0,40.1 13.1,59.0 5.0,59.0 5.0,50.9 23.9,32.0 5.0,13.1" pathLength="100"/><polygon class="mx-run" points="5.0,5.0 13.1,5.0 32.0,23.9 50.9,5.0 59.0,5.0 59.0,13.1 40.1,32.0 59.0,50.9 59.0,59.0 50.9,59.0 32.0,40.1 13.1,59.0 5.0,59.0 5.0,50.9 23.9,32.0 5.0,13.1" pathLength="100"/><polygon class="mx-run b" points="5.0,5.0 13.1,5.0 32.0,23.9 50.9,5.0 59.0,5.0 59.0,13.1 40.1,32.0 59.0,50.9 59.0,59.0 50.9,59.0 32.0,40.1 13.1,59.0 5.0,59.0 5.0,50.9 23.9,32.0 5.0,13.1" pathLength="100"/></svg>
     <div class="manifest">
-      <p class="big" id="mText">Każde okrążenie to&nbsp;seria pytań do&nbsp;twoich hamulców. Jak szybko oddadzą ciepło? Czy po&nbsp;dziesiątym dohamowaniu złapią tak samo jak po&nbsp;pierwszym? *X-Race* odpowiada na&nbsp;nie&nbsp;zawsze tak samo. *Bez* *kompromisów.*</p>
+      <p class="big" id="mText">Każde okrążenie to&nbsp;seria pytań do&nbsp;twoich hamulców. Jak szybko oddadzą ciepło? Czy po&nbsp;dziesiątym dohamowaniu złapią tak samo jak po&nbsp;pierwszym? *X-Race* odpowiada na&nbsp;nie&nbsp;zawsze tak samo. *Bez*&nbsp;*kompromisów.*</p>
     </div>
   </div>
 </section>
@@ -132,7 +132,7 @@
 <!-- 03 HEAT -->
 <section class="scene" id="heat" data-fire="heat">
   <div class="stage">
-    <div class="heat-ph" id="heatPh"><img src="img/wheel.png" alt="Rozgrzana do czerwoności tarcza hamulcowa widoczna przez szprychy felgi" width="1600" height="1317" loading="lazy" decoding="async"><img class="alt" src="img/pads.png" alt="Klocki hamulcowe HART X-Race"></div>
+    <div class="heat-ph" id="heatPh"><img src="img/klocki_sekcja.webp" alt="Tarcze i klocki hamulcowe HART X-Race" loading="lazy" decoding="async"></div>
     <div class="heat-copy">
       <div class="gauge" aria-hidden="true"><span class="mono">Temperatura</span><div class="bar" id="gauge"><i></i><div class="ticks"><span></span><span></span><span></span><span></span><span></span><span></span></div></div><span class="mono" id="gaugeLbl">Niska</span></div>
       <div class="step on"><h2>Hamowanie<br>to&nbsp;ogień.<span class="kw">Tarcze, które oddają ciepło</span></h2><p>Każde dohamowanie zamienia prędkość w&nbsp;temperaturę. Pytanie brzmi, co&nbsp;hamulce zrobią z&nbsp;tym ciepłem.</p></div>
@@ -142,7 +142,37 @@
   </div>
 </section>
 
-<!-- 04 DISCS -->
+<!-- 04 LINIA -->
+<section class="scene" id="linia" data-fire="line" aria-label="Hasła z opakowania i linia produktów">
+  <div class="stage">
+    <div class="claims-layer" id="claimsLayer">
+      <div class="claims-word" aria-hidden="true">
+        <svg viewBox="0 0 2400 320" preserveAspectRatio="xMinYMid meet">
+          <defs><linearGradient id="cwG" x1="0" y1="0" x2="2400" y2="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#fff" stop-opacity=".11"/>
+            <stop offset=".45" stop-color="#fff" stop-opacity=".11"/>
+            <stop offset=".5" stop-color="#e31a22" stop-opacity=".75"/>
+            <stop offset=".55" stop-color="#fff" stop-opacity=".11"/>
+            <stop offset="1" stop-color="#fff" stop-opacity=".11"/>
+          </linearGradient></defs>
+          <text x="0" y="250">X-Race X-Race</text>
+        </svg>
+      </div>
+      <div class="cl" data-fill>No limits.</div>
+      <div class="cl" data-fill>No risk.</div>
+      <div class="cl red" data-fill>Just <span class="lc">x</span>Race.</div>
+    </div>
+    <div class="line-tag" id="lineTag"><h2>Engineered for the <span class="lim">limit</span><span class="kw">Kompletny układ hamulcowy X-Race</span></h2></div>
+    <div class="line-set" id="lineSet" role="img" aria-label="Komplet HART X-Race: opakowanie premium box, tarcza hamulcowa, klocki i puszka na tarcze">
+      <img class="ls ls-box" src="img/line-box.webp" alt="" loading="lazy" decoding="async">
+      <img class="ls ls-drum" src="img/line-drum.webp" alt="" loading="lazy" decoding="async">
+      <img class="ls ls-disc" src="img/line-disc.webp" alt="" loading="lazy" decoding="async">
+      <img class="ls ls-pads" src="img/line-pads.webp" alt="" loading="lazy" decoding="async">
+    </div>
+  </div>
+</section>
+
+<!-- 05 DISCS -->
 <section class="scene xscene" id="tarcze" data-fire="off">
   <div class="stage">
     <div class="dcopy">
@@ -169,7 +199,7 @@
   </div>
 </section>
 
-<!-- 05 PADS -->
+<!-- 06 PADS -->
 <section class="scene xscene rev" id="klocki" data-fire="off">
   <div class="stage">
     <div class="dcopy">
@@ -199,7 +229,7 @@
   </div>
 </section>
 
-<!-- 06 ICONS -->
+<!-- 07 DETALE (ICONS) -->
 <section class="icons hs" id="detale" data-fire="off">
   <div class="stage hs-stage">
   <div class="icons-head">
@@ -248,44 +278,16 @@
   </div>
 </section>
 
+<!-- obracająca się tarcza za sekcjami 08 i 09 -->
+<div class="disc-zone" id="discZone">
+<div class="dz-pin" aria-hidden="true"><img class="m-disc" id="mDisc" src="img/disc2.webp" alt="" loading="lazy" decoding="async"></div>
 
-
-<!-- 08 LINE -->
-<section class="scene" id="linia" data-fire="line" aria-label="Hasła z opakowania i linia produktów">
-  <div class="stage">
-    <div class="claims-layer" id="claimsLayer">
-      <div class="claims-word" aria-hidden="true">
-        <svg viewBox="0 0 2400 320" preserveAspectRatio="xMinYMid meet">
-          <defs><linearGradient id="cwG" x1="0" y1="0" x2="2400" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stop-color="#fff" stop-opacity=".11"/>
-            <stop offset=".45" stop-color="#fff" stop-opacity=".11"/>
-            <stop offset=".5" stop-color="#e31a22" stop-opacity=".75"/>
-            <stop offset=".55" stop-color="#fff" stop-opacity=".11"/>
-            <stop offset="1" stop-color="#fff" stop-opacity=".11"/>
-          </linearGradient></defs>
-          <text x="0" y="250">X-Race X-Race</text>
-        </svg>
-      </div>
-      <div class="cl" data-fill>No limits.</div>
-      <div class="cl" data-fill>No risk.</div>
-      <div class="cl red" data-fill>Just <span class="lc">x</span>Race.</div>
-    </div>
-    <div class="line-tag" id="lineTag"><h2>Engineered for the <span class="lim">limit</span><span class="kw">Kompletny układ hamulcowy X-Race</span></h2></div>
-    <div class="line-set" id="lineSet" role="img" aria-label="Komplet HART X-Race: opakowanie premium box, tarcza hamulcowa, klocki i puszka na tarcze">
-      <img class="ls ls-box" src="img/line-box.webp" alt="" loading="lazy" decoding="async">
-      <img class="ls ls-drum" src="img/line-drum.webp" alt="" loading="lazy" decoding="async">
-      <img class="ls ls-disc" src="img/line-disc.webp" alt="" loading="lazy" decoding="async">
-      <img class="ls ls-pads" src="img/line-pads.webp" alt="" loading="lazy" decoding="async">
-    </div>
-  </div>
-</section>
-
-<!-- 09 HAMUJ PÓŹNIEJ: hasło z efektem hamowania, wprowadza do sekcji współpracy -->
+<!-- 08 HAMUJ PÓŹNIEJ: hasło z efektem hamowania, wprowadza do sekcji współpracy -->
 <section class="brake" id="hamuj" aria-labelledby="ctaHead">
   <h2 class="lines" id="ctaHead"><span class="ln"><span>Hamuj później.</span></span> <span class="ln r"><span>Wychodź mocniej.</span></span></h2>
 </section>
 
-<!-- 10 WSPÓŁPRACA: dwie ścieżki, dla firm i dla kierowców -->
+<!-- 09 WSPÓŁPRACA: dwie ścieżki, dla firm i dla kierowców -->
 <section class="paths" id="wspolpraca" aria-labelledby="pathsHead">
   <div class="paths-head">
     <h2 id="pathsHead">X-Race w&nbsp;Twojej <span class="red">ofercie.</span></h2>
@@ -298,8 +300,9 @@
     <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H11a1 1 0 0 1 1 1v17a2 2 0 0 0-2-2H4zM20 4.5A1.5 1.5 0 0 0 18.5 3H13a1 1 0 0 0-1 1v17a2 2 0 0 1 2-2h6z"/><path d="M7 7.5h2.5M7 11h2.5M14.5 7.5H17M14.5 11H17"/></svg><h3>Katalog zastosowań</h3><p>Prześlemy go razem z&nbsp;ofertą.</p></li>
   </ul>
 </section>
+</div>
 
-<!-- 10 FILIE: mapa z kropek generowana w js/main.js, dane w js/filie.js -->
+<!-- 10 FILIE (mapa): mapa z kropek generowana w js/main.js, dane w js/filie.js -->
 <section class="branches" id="filie" aria-labelledby="brHead">
   <div class="br-head">
     <span class="tag">Sieć HART</span>
@@ -313,7 +316,7 @@
   <div class="br-list" id="brList"></div>
 </section>
 
-<!-- 11 KONTAKT -->
+<!-- 11 KONTAKT: formularz -->
 <section class="contact" id="kontakt" data-fire="contact">
   <div class="ph"><img src="img/drift2.jpg" decoding="async" alt="" loading="lazy"></div>
   <div class="contact-in">
@@ -352,7 +355,7 @@
   </div>
 </section>
 
-<!-- FAQ: treść musi zgadzać się z FAQPage w JSON-LD w <head> -->
+<!-- 12 FAQ: treść musi zgadzać się z FAQPage w JSON-LD w <head> -->
 <section class="faq" id="faq" aria-labelledby="faqHead">
   <div class="faq-head">
     <span class="tag">FAQ</span>

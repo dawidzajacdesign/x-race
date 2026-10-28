@@ -122,8 +122,11 @@ const Embers=(function(){
 /* ---------- manifesto words ---------- */
 const mText=$('#mText');
 const words=[];
-(function(){const raw=mText.textContent.trim().split(/[^\S ]+/);mText.textContent='';   // non-breaking spaces (no orphans) keep short words glued to the next one
-  raw.forEach((w,i)=>{const red=w.startsWith('*');const sp=document.createElement('span');sp.className='w'+(red?' r':'');sp.textContent=w.replace(/\*/g,'');mText.appendChild(sp);if(i<raw.length-1)mText.appendChild(document.createTextNode(' '));words.push(sp);});})();
+(function(){const lines=mText.textContent.trim().split('|');mText.textContent='';   // '|' in HTML = line break between sentences
+  lines.forEach(l=>{const ln=document.createElement('span');ln.className='ln';mText.appendChild(ln);const raw=l.trim().split(/[^\S ]+/);   // non-breaking spaces (no orphans) keep short words glued to the next one
+  raw.forEach((t,i)=>{const parts=t.split(/ (?=\*)/);const box=parts.length>1?ln.appendChild(Object.assign(document.createElement('span'),{className:'w-grp'})):ln;   // "*a*&nbsp;*b*" = two words lit separately, kept on one line
+    parts.forEach((w,j)=>{const red=w.startsWith('*');const sp=document.createElement('span');sp.className='w'+(red?' r':'');sp.textContent=w.replace(/\*/g,'');box.appendChild(sp);if(j<parts.length-1)box.appendChild(document.createTextNode(' '));words.push(sp);});
+    if(i<raw.length-1)ln.appendChild(document.createTextNode(' '));});});})();
 
 /* ---------- elements ---------- */
 const manifest=$('#manifest'), heat=$('#heat'), heatImg=$('#heatPh img'), steps=$$('.heat-copy .step'), gauge=$('#gauge'), gaugeLbl=$('#gaugeLbl');
@@ -150,12 +153,15 @@ function update(){
   // manifesto
   const mp=sceneP(manifest); const lit=Math.floor(lerp(-2,words.length+2,clamp((mp-.05)/.8)));
   words.forEach((w,i)=>w.classList.toggle('on',i<lit));
+  const md=$('#mDisc'); if(md){const zr=$('#discZone').getBoundingClientRect(), vh2=innerHeight;   // disc rolls in from the right edge, then keeps spinning through "Hamuj" + "Współpraca"
+    const dp=clamp((vh2-zr.top)/(zr.height+vh2));   // already in place, only spins with scroll
+    md.style.transform=`translateY(-50%) rotate(${(-dp*80).toFixed(1)}deg)`;}
 
   // heat chapter
   const hp2=sceneP(heat);
   $('#heatPh').style.setProperty('--dim','.78');   // brightness stays at the opening level so the copy is always readable
-  heatImg.style.setProperty('--z',lerp(1.18,1.0,easeOut(hp2)).toFixed(3));
-  const si=hp2<.33?0:hp2<.66?1:2; steps.forEach((s,i)=>s.classList.toggle('on',i===si)); $('#heatPh').classList.toggle('alt-on',si===2);   // pads photo behind the pads copy
+  heatImg.style.setProperty('--z',lerp(1.0,1.18,easeOut(hp2)).toFixed(3));
+  const si=hp2<.33?0:hp2<.66?1:2; steps.forEach((s,i)=>s.classList.toggle('on',i===si));   // one disc photo behind all three steps
   gauge.style.setProperty('--h',lerp(.06,1,clamp(hp2/.85)).toFixed(3));
   gaugeLbl.textContent=hp2<.3?'Niska':hp2<.65?'Wysoka':'Maksymalna';
 
@@ -208,7 +214,9 @@ function update(){
     if(innerWidth>860){
       const avail=st.clientWidth-parseFloat(getComputedStyle(st).paddingLeft);
       const cw=avail/2.5; hsSec.style.setProperty('--cw',cw.toFixed(1)+'px');
-      const travel=Math.max(0,hsTrack.scrollWidth-avail);
+      const bar=hsSec.querySelector('.hs-bar'), trackL=st.getBoundingClientRect().left+parseFloat(getComputedStyle(st).paddingLeft);
+      const stopR=bar?bar.getBoundingClientRect().right:trackL+avail;   // last card ends where the red progress bar ends
+      const travel=Math.max(0,trackL+hsTrack.scrollWidth-stopR);
       const sp=sceneP(hsSec);
       // 1) heading scrolls up to mid-screen, centred  2) slides left  3) rises to its place while the rest fades in  4) cards travel
       const h1=ease(clamp(sp/.14)), h2=ease(clamp((sp-.16)/.14));
