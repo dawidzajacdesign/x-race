@@ -31,7 +31,7 @@ const Fire=(function(){
   const gl=cv.getContext('webgl',{premultipliedAlpha:true,antialias:false,alpha:true,powerPreference:'low-power'});
   if(!gl) return null;
   const vs=`attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
-  const fs=`precision highp float;
+  const fs=`precision ${lite?'mediump':'highp'} float;
   uniform vec2 res;uniform float t,fire,height,smoke,smokeY,turb;
   float h(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
   float n(vec2 p){vec2 i=floor(p),f=fract(p);vec2 u=f*f*(3.-2.*f);
@@ -96,9 +96,11 @@ const Embers=(function(){
   resize();addEventListener('resize',resize);
   let acc=0; const st={rate:0};
   function spawn(){P.push({x:Math.random()*W,y:H+8,vx:(Math.random()-.5)*30,vy:-(25+Math.random()*85),l:0,m:2.5+Math.random()*4,s:.5+Math.random()*1.6,k:Math.random()*100,hot:Math.random()});}
+  let blank=false;
   function step(dt){
-    ctx.clearRect(0,0,W,H);
     acc+=st.rate*dt*(W<720?.5:1); while(acc>1){spawn();acc--;}
+    if(!P.length){if(!blank){ctx.clearRect(0,0,W,H);blank=true;}return;}   // nothing to draw: skip the full-screen clear every frame
+    blank=false; ctx.clearRect(0,0,W,H);
     const cap=lite?110:240; if(P.length>cap)P.splice(0,P.length-cap);
     ctx.globalCompositeOperation='lighter';
     for(let i=P.length-1;i>=0;i--){const p=P[i];p.l+=dt;
@@ -115,6 +117,10 @@ const Embers=(function(){
   }
   return {st,step};
 })();
+
+/* ---------- language switcher: close on outside click / Esc; languages not wired yet ---------- */
+(function(){const l=$('#lang');if(!l)return;document.addEventListener('click',e=>{if(!l.contains(e.target))l.open=false;});document.addEventListener('keydown',e=>{if(e.key==='Escape')l.open=false;});
+  l.querySelectorAll('a[href="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();l.open=false;}));})();
 
 /* ---------- hero streaks ---------- */
 (function(){const s=$('#streaks');if(!s||reduce)return;for(let i=0;i<9;i++){const e=document.createElement('i');e.style.top=(52+Math.random()*44)+'%';e.style.animationDuration=(1.2+Math.random()*2.4)+'s';e.style.animationDelay=(-Math.random()*3)+'s';e.style.opacity=(.25+Math.random()*.6).toFixed(2);s.appendChild(e);}})();
@@ -329,7 +335,7 @@ if(hv){
   const LOOP=2600, TAIL=per*.34, N=26;
   let last=0;
   function draw(now){
-    if(now-last<33) return; last=now;            // ~30 fps, enough for a smooth tab icon
+    if(now-last<66) return; last=now;            // ~15 fps: every frame re-encodes a PNG, so keep it cheap
     const head=(now%LOOP)/LOOP*per;
     g.clearRect(0,0,S,S); g.lineJoin='round'; g.lineCap='round';
     g.strokeStyle='rgba(227,26,34,.38)'; g.lineWidth=3; outline(); g.stroke();
@@ -343,9 +349,10 @@ if(hv){
     g.fillStyle=gr; g.beginPath(); g.arc(h[0],h[1],9,0,6.283); g.fill();
     link.href=c.toDataURL('image/png');
   }
+  if(lite){draw(LOOP*.3);return;}               // weaker devices: static icon, no per-frame PNG encoding
   function raf(t){draw(t);requestAnimationFrame(raf);}
   requestAnimationFrame(raf);
-  setInterval(()=>{if(document.hidden)draw(performance.now()+999);},250);  // rAF pauses in background tabs
+  setInterval(()=>{if(document.hidden)draw(performance.now()+999);},1000);  // rAF pauses in background tabs
 })();
 
 /* contact headline: lines slide up one after another when it comes into view */
