@@ -360,6 +360,16 @@ if(hv){
   const io=new IntersectionObserver(es=>es.forEach(e=>{h.classList.toggle('in',e.isIntersecting);}),{threshold:.35});
   io.observe(h);})();
 
+/* YouTube: the player (and Google's cookies) load only after the visitor clicks play */
+$$('.yt').forEach(box=>{const b=box.querySelector('.yt-play'); if(!b) return;
+  b.addEventListener('click',()=>{
+    const f=document.createElement('iframe');
+    f.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(box.dataset.yt)}?autoplay=1&rel=0&modestbranding=1`;
+    f.title=box.dataset.title||'Film'; f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen'; f.allowFullscreen=true;
+    box.appendChild(f); box.classList.add('on'); f.focus();
+    track('xrace_video_play');
+  });});
+
 /* copy e-mail */
 $('#copyMail')?.addEventListener('click',e=>{
   const b=e.currentTarget, el=$('#mail');

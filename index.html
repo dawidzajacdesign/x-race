@@ -64,7 +64,7 @@
 <canvas id="embers" aria-hidden="true"></canvas>
 
 <header class="nav" id="nav">
-  <a class="brand" href="#top" aria-label="HART X-Race, początek strony"><svg viewBox="0 0 334 92" aria-hidden="true"><use href="#logo"/></svg></a>
+  <a class="brand" href="index.html" aria-label="HART X-Race, odśwież stronę"><svg viewBox="0 0 334 92" aria-hidden="true"><use href="#logo"/></svg></a>
   <ul>
     <li><a href="#heat">Technologia</a></li>
     <li><a href="#tarcze">Tarcze</a></li>
@@ -84,6 +84,8 @@
         <li><a href="#" lang="sk">SK <span>Slovenčina</span></a></li>
       </ul>
     </details>
+    <!-- DO UZUPEŁNIENIA: adres systemu zamówień HART (tu, w sekcji Współpraca i w stopce) -->
+    <a class="nav-order" href="https://ZAMOWIENIA.hartphp.com.pl" target="_blank" rel="noopener" data-track="order_nav">System zamówień</a>
     <a class="pill" href="#formularz" data-typ="sklep">Zostań partnerem</a>
   </div>
 </header>
@@ -94,8 +96,7 @@
   <li><a href="#heat" data-ch="heat" aria-label="Ciepło"><i></i></a></li>
   <li><a href="#tarcze" data-ch="tarcze" aria-label="Tarcze"><i></i></a></li>
   <li><a href="#klocki" data-ch="klocki" aria-label="Klocki"><i></i></a></li>
-  <li><a href="#detale" data-ch="detale" aria-label="Detale"><i></i></a></li>
-  <li><a href="#linia" data-ch="linia" aria-label="Linia"><i></i></a></li>
+  <li><a href="#detale" data-ch="detale" aria-label="Detale"><i></i></a></li>  <li><a href="#linia" data-ch="linia" aria-label="Linia"><i></i></a></li>
   <li><a href="#wspolpraca" data-ch="wspolpraca" aria-label="Współpraca"><i></i></a></li>
   <li><a href="#filie" data-ch="filie" aria-label="Filie HART"><i></i></a></li>
   <li><a href="#kontakt" data-ch="kontakt" aria-label="Kontakt"><i></i></a></li>
@@ -121,7 +122,7 @@
   <div class="shade"></div>
     <div class="hero-copy">
     <div class="lead">
-      <svg class="logo-xl reveal-up" style="animation-delay:.15s" viewBox="0 0 334 92" role="img" aria-label="HART X-Race"><use href="#logo"/></svg>
+      <a class="logo-home" href="index.html" aria-label="HART X-Race, odśwież stronę"><svg class="logo-xl reveal-up" style="animation-delay:.15s" viewBox="0 0 334 92" aria-hidden="true"><use href="#logo"/></svg></a>
       <h1 class="hkw reveal-up" style="animation-delay:.22s">Sportowe tarcze i&nbsp;klocki hamulcowe HART X-Race</h1>
       <p class="h1 reveal-up" style="animation-delay:.3s"><span class="hl" data-t="Wydajność">Wydajność</span> <span class="hl" data-t="bez kompromisów">bez&nbsp;kompromisów</span></p>
     </div>
@@ -312,6 +313,19 @@
     <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10v4a1 1 0 0 0 1 1h3l8 5V4L7 9H4a1 1 0 0 0-1 1z"/><path d="M7 15l1.5 5.5h2.5L10 16.8M18.5 9a4 4 0 0 1 0 6M20.5 6.5a7.5 7.5 0 0 1 0 11"/></svg><h3>Wsparcie na&nbsp;start</h3><p>Pomoc sprzedażowa i&nbsp;marketingowa przy wprowadzeniu linii.</p></li>
     <li><svg class="pi" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5A1.5 1.5 0 0 1 5.5 3H11a1 1 0 0 1 1 1v17a2 2 0 0 0-2-2H4zM20 4.5A1.5 1.5 0 0 0 18.5 3H13a1 1 0 0 0-1 1v17a2 2 0 0 1 2-2h6z"/><path d="M7 7.5h2.5M7 11h2.5M14.5 7.5H17M14.5 11H17"/></svg><h3>Katalog zastosowań</h3><p>Prześlemy go razem z&nbsp;ofertą.</p></li>
   </ul>
+  <!-- FILM: YouTube ładuje się dopiero po kliknięciu (szybsze wczytanie strony, brak cookies Google przed kliknięciem).
+       DO UZUPEŁNIENIA: data-yt = ID filmu z adresu youtube.com/watch?v=ID, poster = kadr z filmu zapisany lokalnie w img/ -->
+  <div class="film" id="film">
+    <div class="film-head">
+      <span class="tag">Film</span>
+      <h3>X-Race <span class="red">w&nbsp;akcji.</span></h3>
+    </div>
+    <div class="yt" data-yt="VIDEO_ID" data-title="HART X-Race w akcji">
+      <img src="img/drift2.jpg" alt="" loading="lazy" decoding="async">
+      <button type="button" class="yt-play" aria-label="Odtwórz film HART X-Race w akcji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+      <p class="yt-note">Po kliknięciu film wczyta się z&nbsp;serwisu YouTube.</p>
+    </div>
+  </div>
 </section>
 </div>
 
@@ -325,6 +339,10 @@
   <div class="br-map">
     <svg id="plMap" role="img" aria-labelledby="plMapT"><title id="plMapT">Mapa Polski, Czech i&nbsp;Słowacji z&nbsp;punktami HART</title></svg>
     <div class="br-tip" id="brTip" aria-hidden="true"></div>
+  </div>
+  <div class="porder">
+    <p>Już współpracujesz z&nbsp;HART? Zamów X-Race w&nbsp;naszym systemie.</p>
+    <div class="ctas"><a class="pill red" href="https://ZAMOWIENIA.hartphp.com.pl" target="_blank" rel="noopener" data-track="order_map">Przejdź do systemu zamówień <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M4 2h6v6M10 2 2 10"/></svg></a><a class="pill" href="#formularz" data-typ="sklep">Zostań partnerem</a></div>
   </div>
   <div class="br-list" id="brList"></div>
 </section>
@@ -392,6 +410,7 @@
     <span>NIP 7542748922 · KRS 0000170602, Sąd Rejonowy w&nbsp;Opolu</span>
   </div>
   <ul class="flinks">
+    <li><a href="https://ZAMOWIENIA.hartphp.com.pl" target="_blank" rel="noopener" data-track="order_footer">System zamówień</a></li>
     <li><a href="https://www.hartphp.com.pl/polityka-prywatnosci" target="_blank" rel="noopener">Polityka prywatności</a></li>
     <li><a href="https://www.hartphp.com.pl/pliki-cookies" target="_blank" rel="noopener">Pliki cookies</a></li>
     <li><a href="https://www.hartphp.com.pl" target="_blank" rel="noopener">hartphp.com.pl</a></li>
