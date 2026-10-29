@@ -10,6 +10,16 @@ const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const easeOut=t=>1-Math.pow(1-t,3);
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
+/* heading gradient: wrap each plain white text run of h1/h2 in .gt; coloured or outlined words are skipped */
+$$('h1,h2').forEach(h=>{
+  if(h.closest('.line-tag')) return;
+  const skip=n=>n.nodeType===1&&n.matches('.red,.out,.kw,.r');
+  (function walk(el){[...el.childNodes].forEach(n=>{
+    if(n.nodeType===3&&n.textContent.trim()){const s=document.createElement('span');s.className='gt';n.replaceWith(s);s.appendChild(n);}
+    else if(n.nodeType===1&&!skip(n)&&n.tagName!=='BR'&&n.tagName!=='svg') walk(n);
+  });})(h);
+});
+
 /* progress of a sticky scene: 0 when its top hits viewport top, 1 when its bottom hits viewport bottom */
 function sceneP(el){const r=el.getBoundingClientRect();const span=r.height-innerHeight;return span>0?clamp(-r.top/span):clamp(1-r.top/innerHeight);}
 /* progress of an element passing through the viewport: 0 entering at bottom, 1 at `end` fraction from top */
@@ -166,7 +176,7 @@ function update(){
   // heat chapter
   const hp2=sceneP(heat);
   $('#heatPh').style.setProperty('--dim','.78');   // brightness stays at the opening level so the copy is always readable
-  heatImg.style.setProperty('--z',lerp(1.0,1.18,easeOut(hp2)).toFixed(3));
+  heatImg.style.setProperty('--z',lerp(1.0,1.25,clamp(hp2)).toFixed(3));
   const si=hp2<.33?0:hp2<.66?1:2; steps.forEach((s,i)=>s.classList.toggle('on',i===si));   // one disc photo behind all three steps
   gauge.style.setProperty('--h',lerp(.06,1,clamp(hp2/.85)).toFixed(3));
   gaugeLbl.textContent=hp2<.3?'Niska':hp2<.65?'Wysoka':'Maksymalna';
@@ -507,60 +517,85 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
 
 /* ---------- inquiry form ---------- */
 (function(){
-  const form=$('#xform'); if(!form) return;
-  const status=$('#fstatus'), btn=$('#xsend'), b2b=$$('.b2b-only'), drv=$$('.driver-only'), msgLbl=$('#msgLbl'), msg=form.elements.wiadomosc;
-  const MAIL='hart@hartphp.com.pl';
-  // the form adapts to who is asking: fields, perks above the form, message hint and the button label
-  function setTyp(v){
-    const r=form.querySelector(`input[name="typ"][value="${v}"]`); if(r) r.checked=true;
-    const driver=v==='kierowca';
-    form.classList.toggle('driver',driver);
-    b2b.forEach(l=>{l.hidden=driver;const i=l.querySelector('input');if(i&&i.name==='firma')i.required=!driver;});
-    drv.forEach(l=>{l.hidden=!driver;});
-    msgLbl.textContent=driver?'Jakim autem jeździsz?':'Czego potrzebujesz? (opcjonalnie)';
-    msg.placeholder=driver?'Marka, model, rocznik i silnik, np. Volkswagen Golf VII GTI 2.0 TSI 2016':'Np. marki aut, które obsługujesz, albo przybliżone ilości';
-    btn.textContent=driver?'Sprawdź, gdzie kupić':'Wyślij zapytanie o ofertę';
+  const form=$('#xform'), sec=$('#kontakt'); if(!form||!sec) return;
+  const steps=$$('#xform .fstep'), bars=$$('#xform .fprog i'), status=$('#fstatus'), btn=$('#xsend'), back=$('#fBack');
+  const done=$('#fDone'), near=$('#fNear'), city=form.elements.miasto;
+  const TYP={sklep:['Sklep','sklepu'],warsztat:['Warsztat','warsztatu'],hurtownia:['Hurtownia','hurtowni']};
+  let step=0, branch=null;
+
+  // desktop: once the visitor scrolls past ~35% of the section, the steps give way to the form card
+  const wide=matchMedia('(min-width:1001px)');
+  let locked=false;   // after the first interaction the form stays, scrolling back won't hide it
+  function onScroll(){
+    if(locked||!wide.matches){sec.classList.add('form-on');return;}
+    const r=sec.getBoundingClientRect(), p=-r.top/Math.max(1,r.height-innerHeight);
+    sec.classList.toggle('form-on',p>.35);
   }
-  form.addEventListener('change',e=>{if(e.target.name==='typ')setTyp(e.target.value);});
-  // a field marked wrong is cleared as soon as it's fixed, not only on the next submit
-  form.addEventListener('input',e=>{if(e.target.checkValidity&&e.target.checkValidity())e.target.removeAttribute('aria-invalid');});
-  let started=false; form.addEventListener('focusin',()=>{if(!started){started=true;track('xrace_form_start');}});
-  // CTAs elsewhere on the page pick the right path before scrolling to the form
-  $$('a[data-typ]').forEach(a=>a.addEventListener('click',()=>{setTyp(a.dataset.typ);track('xrace_cta',{typ:a.dataset.typ});}));
-  setTyp((form.querySelector('input[name="typ"]:checked')||{}).value||'sklep');
+  addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',onScroll); onScroll();
+  form.addEventListener('focusin',()=>{locked=true;sec.classList.add('form-on');});
+
+  // CTAs elsewhere on the page jump straight to the form, already swapped in
+  $$('a[href="#formularz"]').forEach(a=>a.addEventListener('click',e=>{
+    const v=a.dataset.typ; if(v){const r=form.querySelector(`input[name="typ"][value="${v}"]`); if(r) r.checked=true;}
+    track('xrace_cta',{typ:v});
+    if(!wide.matches) return;
+    e.preventDefault(); locked=true; sec.classList.add('form-on');
+    scrollTo({top:sec.offsetTop+(sec.offsetHeight-innerHeight)*.5,behavior:reduce?'auto':'smooth'});
+  }));
 
   const say=(t,kind)=>{status.textContent=t;status.className='fstatus'+(kind?' '+kind:'');};
-  function mailtoHref(d){
-    const body=[`Kim jestem: ${d.typ}`,d.firma&&`Firma: ${d.firma}`,`Miejscowość: ${d.miasto}`,`E-mail: ${d.email}`,d.telefon&&`Telefon: ${d.telefon}`,'',d.wiadomosc||''].filter(x=>x!==false&&x!==undefined&&x!=='').join('\n');
-    return `mailto:${MAIL}?subject=${encodeURIComponent('X-Race: zapytanie ze strony')}&body=${encodeURIComponent(body)}`;
+  function show(i){
+    step=i;
+    steps.forEach((s,k)=>{s.hidden=k!==i;});
+    bars.forEach((b,k)=>b.classList.toggle('on',k<=i));
+    $('#fStepNo').textContent=`Krok ${i+1} z ${steps.length}`;
+    $('#fStepName').textContent=steps[i].dataset.name;
+    back.hidden=i===0;
+    btn.textContent=i===steps.length-1?'Wyślij zgłoszenie':'Dalej';
+    const t=TYP[form.elements.typ.value]||TYP.sklep;
+    $('#fChip').textContent=t[0]; $('#fFor').textContent=t[1];
+    say('');
   }
-  form.addEventListener('submit',async e=>{
-    e.preventDefault();
-    form.classList.add('tried');
-    const bad=[...form.querySelectorAll('input,textarea')].find(i=>!i.closest('[hidden]')&&!i.checkValidity());
-    if(bad){
-      bad.setAttribute('aria-invalid','true');
-      const name=((bad.closest('label')||{}).querySelector?.('span')?.firstChild?.textContent||'').replace('*','').trim();
-      say(bad.type==='checkbox'?'Zaznacz zgodę, żebyśmy mogli odpowiedzieć.':bad.validity.typeMismatch?'Sprawdź adres e-mail, np. jan@firma.pl.':bad.name==='telefon'&&bad.value?'Sprawdź numer telefonu, np. 600 123 456.':`Uzupełnij pole „${name}”.`,'err');
-      bad.focus();return;}
-    const d=Object.fromEntries(new FormData(form).entries());
-    if(d.typ==='kierowca'){delete d.firma;delete d.nip;}
-    d.zgoda=!!d.zgoda; d.strona=location.href;
-    btn.disabled=true; say('Wysyłamy…');
-    try{
-      const res=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)});
-      if(!res.ok) throw new Error('HTTP '+res.status);
-      track('xrace_form_submit',{typ:d.typ});
-      $$('.fperks').forEach(u=>u.hidden=true);
-      form.innerHTML='<div class="fdone"><h3>Dziękujemy!</h3><p>Zapytanie dotarło do&nbsp;HART. Przekażemy je do&nbsp;filii najbliżej Ciebie, a&nbsp;opiekun odpowie na&nbsp;podany adres e-mail w&nbsp;dni robocze.</p><p>Pilna sprawa? Zadzwoń: <a href="tel:+48774539626">77&nbsp;453&nbsp;96&nbsp;26</a></p></div>';
-    }catch(err){
-      btn.disabled=false;
-      say('','err');
-      status.innerHTML='Nie&nbsp;udało się wysłać formularza. <a href="">Wyślij to&nbsp;samo zapytanie e-mailem</a> albo zadzwoń: 77&nbsp;453&nbsp;96&nbsp;26.';
-      status.querySelector('a').href=mailtoHref(d);
-      track('xrace_form_error',{typ:d.typ});
-    }
+
+  // nearest branch: the typed town matched against the branch list (js/filie.js)
+  const norm=s=>s.toLowerCase().replace(/ł/g,'l').normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
+  const PIN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+  city.addEventListener('input',()=>{
+    const q=norm(city.value);
+    branch=q.length>=3?(window.XRACE_FILIE||[]).find(f=>norm(f.miasto).startsWith(q)):null;
+    near.hidden=!branch;
+    if(branch) near.innerHTML=`${PIN}<span>Najbliżej: ${branch.miasto}, ${branch.typ==='centrala'?'centrala':'filia'} HART</span>`;
   });
+
+  // a field marked wrong is cleared as soon as it's fixed, not only on the next click
+  form.addEventListener('input',e=>{if(e.target.checkValidity&&e.target.checkValidity())e.target.removeAttribute('aria-invalid');});
+  let started=false; form.addEventListener('focusin',()=>{if(!started){started=true;track('xrace_form_start');}});
+  back.addEventListener('click',()=>show(step-1));
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    // no validation for now: every step moves on whatever is filled in
+    if(step<steps.length-1){show(step+1);track('xrace_form_step',{step:step+1});steps[step].querySelector('input:not([type=radio])')?.focus();return;}
+
+    // TODO: wysyłka do /api/contact; na razie zgłoszenie nigdzie nie trafia, pokazujemy tylko potwierdzenie
+    const d=Object.fromEntries(new FormData(form).entries());
+    btn.disabled=true;
+    setTimeout(()=>{
+      btn.disabled=false;
+      track('xrace_form_submit',{typ:d.typ});
+      const where=branch?`do&nbsp;filii HART w&nbsp;${branch.miasto}`:'do&nbsp;najbliższej filii HART';
+      $('#fDoneTxt').innerHTML=`Witamy w&nbsp;gronie partnerów X-Race. Przekazaliśmy zgłoszenie ${where}, a&nbsp;handlowiec odezwie się${d.email?' na&nbsp;<b></b>':''} z&nbsp;ofertą dla Twojego ${(TYP[d.typ]||TYP.sklep)[1]}. Już niedługo Twoi klienci będą hamować później i&nbsp;wychodzić z&nbsp;zakrętów mocniej.`;
+      if(d.email) $('#fDoneTxt b').textContent=d.email;
+      form.hidden=true; done.hidden=false; done.focus();
+    },500);
+  });
+
+  $('#fReset').addEventListener('click',()=>{
+    form.reset(); branch=null; near.hidden=true;
+    form.hidden=false; done.hidden=true; show(0);
+    scrollTo({top:0,behavior:reduce?'auto':'smooth'});
+  });
+  show(0);
 })();
 
 /* loop */

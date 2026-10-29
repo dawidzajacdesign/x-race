@@ -349,39 +349,73 @@
 
 <!-- 11 KONTAKT: formularz -->
 <section class="contact" id="kontakt" data-fire="contact">
-  <div class="ph"><img src="img/drift2.jpg" decoding="async" alt="" loading="lazy"></div>
-  <div class="contact-in">
-    <h2 class="c-head">Zapytaj o&nbsp;ofertę.<span class="kw">Tarcze i&nbsp;klocki X-Race dla Twojego sklepu lub warsztatu</span></h2>
-    <p class="intro">Zostaw kilka danych, a&nbsp;opiekun z&nbsp;najbliższej filii HART odezwie się z&nbsp;ofertą dopasowaną do&nbsp;Twojego sklepu lub warsztatu. Bez zobowiązań.</p>
+  <!-- na desktopie sekcja jest wyższa od ekranu: po scrollu kroki po prawej ustępują miejsca okienku formularza (js/main.js) -->
+  <div class="cx-stick">
+    <div class="cx-copy">
+      <p class="cx-kicker">Dla sklepów, warsztatów i&nbsp;hurtowni</p>
+      <h2 class="cx-head" id="cxHead">X-Race<br>w&nbsp;Twojej<br><span class="out">ofercie.</span></h2>
+      <p class="cx-lead">Nowa linia tarcz i&nbsp;klocków hamulcowych HART dla klientów, którzy jeżdżą sportowo. Sprzedajemy ją przez sieć HART, więc zamawiasz tam, gdzie zamawiasz już dziś.</p>
+      <div class="ctas">
+        <a class="pill red" href="#formularz" data-typ="sklep">Zostań partnerem X-Race</a>
+        <a class="pill" href="https://ZAMOWIENIA.hartphp.com.pl" target="_blank" rel="noopener" data-track="order_contact">Mam konto B2B HART</a>
+      </div>
+    </div>
 
-    <div class="fwrap" id="formularz">
-      <!-- co klient dostaje po wysłaniu: lista zmienia się z wyborem "Kim jesteś?" (js/main.js) -->
-      <ul class="fperks b2b-only" aria-label="Co otrzymasz">
-        <li><b>Warunki handlowe</b>i&nbsp;dostępność ze&nbsp;stanów HART</li>
-        <li><b>Katalog zastosowań</b>X-Race dla aut Twoich klientów</li>
-        <li><b>Opiekun w&nbsp;filii</b>blisko Ciebie, w&nbsp;Polsce, Czechach lub na&nbsp;Słowacji</li>
-      </ul>
-      <form class="xform" id="xform" action="/api/contact" method="post" novalidate>
-        <fieldset class="who">
-          <legend class="mono">Kim jesteś? Dopasujemy formularz</legend>
-          <label><input type="radio" name="typ" value="sklep" checked><span><svg class="wi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5 4.6 4h14.8L21 9.5M3 9.5c0 1.4 1.1 2.5 2.5 2.5S8 10.9 8 9.5c0 1.4 1.1 2.5 2.5 2.5S13 10.9 13 9.5c0 1.4 1.1 2.5 2.5 2.5S18 10.9 18 9.5c0 1.4 1.1 2.5 2.5 2.5M3 9.5h18M4.5 12v8h15v-8M10 20v-5h4v5"/></svg>Sklep</span></label>
-          <label><input type="radio" name="typ" value="warsztat"><span><svg class="wi" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0 5.2 5.2l-8.6 8.6a2.1 2.1 0 0 1-3-3l8.6-8.6a4 4 0 0 1-2.2-2.2zM14.7 6.3a4 4 0 0 1 5-2.3l-2.6 2.6.5 1.8 1.8.5 2.6-2.6a4 4 0 0 1-2.1 5.2"/></svg>Warsztat</span></label>
-        </fieldset>
-        <div class="fgrid">
-          <label class="fld wide"><span>Nazwa firmy *</span><input name="firma" autocomplete="organization" required maxlength="160"></label>
-          <label class="fld"><span>Telefon *</span><input name="telefon" type="tel" autocomplete="tel" inputmode="tel" required minlength="9" maxlength="30" pattern="[+0-9 ()\-]{9,30}"></label>
-          <label class="fld"><span>E-mail *</span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160"></label>
-          <label class="fld wide"><span>Miejscowość * <small>(wskażemy najbliższą filię)</small></span><input name="miasto" autocomplete="address-level2" required maxlength="80"></label>
-          <label class="fld wide"><span id="msgLbl">Wiadomość</span><textarea name="wiadomosc" rows="4" maxlength="3000" placeholder="Np. jakie marki aut obsługujesz, jakich ilości się spodziewasz"></textarea></label>
-        </div>
-        <label class="hp" aria-hidden="true">Strona www<input name="website" tabindex="-1" autocomplete="off"></label>
-        <label class="consent"><input type="checkbox" name="zgoda" required><span>Zgadzam się, by HART Sp. z&nbsp;o.o. (Opole) użył moich danych tylko do&nbsp;odpowiedzi na&nbsp;to&nbsp;zapytanie. <a href="https://www.hartphp.com.pl/polityka-prywatnosci" target="_blank" rel="noopener">Polityka prywatności</a> *</span></label>
-        <div class="fsend">
-          <button class="pill red" type="submit" id="xsend">Wyślij zapytanie o&nbsp;ofertę</button>
-          <p class="fnote">Bez zobowiązań. Wolisz zadzwonić? <a href="tel:+48774539626">77&nbsp;453&nbsp;96&nbsp;26</a></p>
+    <div class="cx-side">
+      <ol class="cx-steps" aria-label="Jak to działa">
+        <li><span class="n" aria-hidden="true">1</span><div><h3>Napisz, kim jesteś</h3><p>Sklep, warsztat czy hurtownia. Kilka pól w&nbsp;formularzu, bez zobowiązań.</p></div></li>
+        <li><span class="n" aria-hidden="true">2</span><div><h3>Dobieramy ofertę</h3><p>Tarcze i&nbsp;klocki do&nbsp;aut Twoich klientów, warunki handlowe i&nbsp;katalog zastosowań.</p></div></li>
+        <li><span class="n" aria-hidden="true">3</span><div><h3>Sprzedajesz X-Race</h3><p>Zamawiasz ze&nbsp;stanów magazynowych HART i&nbsp;dostajesz wsparcie przy wprowadzeniu linii.</p></div></li>
+      </ol>
+
+      <!-- formularz w 3 krokach; na razie bez wysyłki: po "Wyślij" pokazuje tylko potwierdzenie -->
+      <div class="cx-card" id="formularz">
+        <form class="xform" id="xform" novalidate>
+          <div class="fprog" aria-hidden="true"><span class="mono" id="fStepNo">Krok 1 z 3</span><span class="mono" id="fStepName">Profil</span><i></i><i></i><i></i></div>
+
+          <fieldset class="fstep" data-name="Profil">
+            <legend class="fh">Zostań partnerem X-Race</legend>
+            <p class="fsub">Zacznij od&nbsp;jednego kliknięcia. Całość zajmie około minuty.</p>
+            <p class="flbl">Kim jesteś?</p>
+            <div class="who">
+              <label><input type="radio" name="typ" value="sklep" checked><span><b>Sklep</b>Sprzedajesz części i&nbsp;akcesoria</span></label>
+              <label><input type="radio" name="typ" value="warsztat"><span><b>Warsztat</b>Montujesz hamulce u&nbsp;klientów</span></label>
+              <label><input type="radio" name="typ" value="hurtownia"><span><b>Hurtownia</b>Zaopatrujesz sklepy i&nbsp;warsztaty</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fstep" data-name="Firma" hidden>
+            <legend class="fh">Gdzie działasz?</legend>
+            <p class="fsub">Po&nbsp;miejscowości wskażemy najbliższą filię HART, która przygotuje ofertę.</p>
+            <span class="fchip" id="fChip">Sklep</span>
+            <label class="fld"><span>Nazwa firmy *</span><input name="firma" autocomplete="organization" required maxlength="160"></label>
+            <label class="fld"><span>Miejscowość *</span><input name="miasto" autocomplete="address-level2" required maxlength="80"></label>
+            <p class="fnear" id="fNear" hidden></p>
+          </fieldset>
+
+          <fieldset class="fstep" data-name="Kontakt" hidden>
+            <legend class="fh">Jak się z&nbsp;Tobą skontaktować?</legend>
+            <p class="fsub">Handlowiec HART odezwie się z&nbsp;ofertą dla Twojego <span id="fFor">sklepu</span>.</p>
+            <label class="fld"><span>Imię i&nbsp;nazwisko *</span><input name="osoba" autocomplete="name" required maxlength="120"></label>
+            <label class="fld"><span>E-mail *</span><input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="160"></label>
+            <label class="fld"><span>Telefon</span><input name="telefon" type="tel" autocomplete="tel" inputmode="tel" maxlength="30" pattern="[+0-9 ()\-]{9,30}" placeholder="opcjonalnie"></label>
+            <label class="consent"><input type="checkbox" name="zgoda" required><span>Zgadzam się na&nbsp;kontakt HART Sp. z&nbsp;o.o. w&nbsp;sprawie oferty. Szczegóły w&nbsp;<a href="https://www.hartphp.com.pl/polityka-prywatnosci" target="_blank" rel="noopener">polityce prywatności</a>.</span></label>
+          </fieldset>
+
           <p class="fstatus" id="fstatus" role="status" aria-live="polite"></p>
+          <div class="fnav">
+            <button class="pill" type="button" id="fBack" hidden>Wstecz</button>
+            <button class="pill red" type="submit" id="xsend">Dalej</button>
+          </div>
+        </form>
+
+        <div class="fdone" id="fDone" hidden tabindex="-1">
+          <span class="fok" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M12 25 21 34 37 15"/></svg></span>
+          <h3>Dziękujemy! Zgłoszenie wysłane.</h3>
+          <p id="fDoneTxt"></p>
+          <button class="pill" type="button" id="fReset">Wróć do strony</button>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </section>
