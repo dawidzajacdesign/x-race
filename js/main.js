@@ -156,6 +156,16 @@ const rail=$$('#rail a'), chapters=rail.map(a=>document.getElementById(a.dataset
 const nav=$('#nav'), railEl=$('#rail');
 const formWrap=$('#formularz');
 
+// product scenes: only these parts of the timeline animate; the still gaps between them are skipped.
+// The optional third value stretches a part, so the callouts (from .86) come one by one, each with its own scroll.
+// (section heights in style.css match the kept length: 100vh + 320vh * sum of (b-a)*stretch)
+const XS_KEEP=[[0,.34],[.74,.86],[.86,1,3]], XS_KEEP_MIX=[[0,.36],[.46,.68],[.74,.86],[.86,1,3]];
+function skipIdle(p,keep){
+  const tot=keep.reduce((s,[a,b,k=1])=>s+(b-a)*k,0); let d=p*tot;
+  for(const [a,b,k=1] of keep){ const len=(b-a)*k; if(d<=len) return a+d/k; d-=len; }
+  return 1;
+}
+
 const FT={fire:0,height:.25,smoke:0,smokeY:.3,turb:1};
 function update(){
   const vh=innerHeight;
@@ -184,7 +194,7 @@ function update(){
   // product scenes: X window opens around the photo, subtext and callouts appear with scroll
   xscenes.forEach(S=>{
     if(innerWidth>860){
-      const dp=sceneP(S.el);
+      const dp=skipIdle(sceneP(S.el),S.mix?XS_KEEP_MIX:XS_KEEP);
       // the X stays square (sized to the shorter side), then opens out to the photo's own proportions
       const W=S.media.clientWidth, H=S.media.clientHeight;
       const open=ease(clamp((dp-.03)/.27)), s=lerp(.7,1,easeOut(clamp(dp/.25)));

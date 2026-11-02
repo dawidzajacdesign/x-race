@@ -38,12 +38,11 @@
 ]}
 ]}
 </script>
-<script>window.dataLayer=window.dataLayer||[];</script>
-<!--
-  Google Tag Manager: odkomentuj po decyzji, który kontener ma zbierać dane (ten sam co hartphp.pl: GTM-5CHM8CFF, czy osobny).
-  Pamiętaj, że GTM z analityką/reklamami wymaga banera zgód na cookies.
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-5CHM8CFF');</script>
--->
+<!-- Consent Mode v2: everything denied until the visitor chooses; GTM (GTM-5CHM8CFF, shared with hartphp) is loaded by js/consent.js only after consent -->
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',functionality_storage:'granted',security_storage:'granted',wait_for_update:500});
+dataLayer.push({content_group:'X-Race'});</script>
+<script src="js/consent.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Urbanist:wght@800;900&display=swap">
@@ -205,10 +204,10 @@
       <svg class="xo" viewBox="0 0 100 100" aria-hidden="true"><polygon/><polygon/></svg>
     </div>
     <div class="fullbox"><img src="img/discs.webp" data-same alt="" loading="lazy" decoding="async" data-w="1400" data-h="1187"><span class="ftint" aria-hidden="true"></span>
-      <div class="callout" data-ix=".14" data-iy=".66" data-at=".87"><span class="dot"></span><span class="ln"></span><span class="tx">Nawiercana i&nbsp;nacinana powierzchnia</span></div>
-      <div class="callout l" data-ix=".86" data-iy=".16" data-at=".90"><span class="dot"></span><span class="ln"></span><span class="tx">Powłoka ochronna nowej generacji</span></div>
-      <div class="callout l" data-ix=".66" data-iy=".56" data-at=".93"><span class="dot"></span><span class="ln"></span><span class="tx">Ochrona 360°, także w&nbsp;kanałach wentylacyjnych</span></div>
-      <div class="callout" data-ix=".36" data-iy=".90" data-at=".96"><span class="dot"></span><span class="ln"></span><span class="tx">Stabilna praca w&nbsp;wysokich temperaturach</span></div>
+      <div class="callout" data-ix=".14" data-iy=".66" data-at=".87" style="margin-top:60px"><span class="dot"></span><span class="ln"></span><span class="tx">Nawiercana i&nbsp;nacinana powierzchnia</span></div>
+      <div class="callout l" data-ix=".86" data-iy=".27" data-at=".90" style="margin:100px 0 0 -200px"><span class="dot"></span><span class="ln"></span><span class="tx">Powłoka ochronna nowej generacji</span></div>
+      <div class="callout l" data-ix=".66" data-iy=".56" data-at=".93"><span class="dot"></span><span class="ln"></span><span class="tx">Stabilna praca w&nbsp;wysokich temperaturach</span></div>
+      <div class="callout" data-ix=".36" data-iy=".90" data-at=".96" style="margin-left:40px"><span class="dot"></span><span class="ln"></span><span class="tx">Ochrona 360°, także w&nbsp;kanałach wentylacyjnych</span></div>
     </div>
   </div>
 </section>
@@ -447,10 +446,28 @@
     <li><a href="https://ZAMOWIENIA.hartphp.com.pl" target="_blank" rel="noopener" data-track="order_footer">System zamówień</a></li>
     <li><a href="https://www.hartphp.com.pl/polityka-prywatnosci" target="_blank" rel="noopener">Polityka prywatności</a></li>
     <li><a href="https://www.hartphp.com.pl/pliki-cookies" target="_blank" rel="noopener">Pliki cookies</a></li>
+    <li><button type="button" class="flink-btn" data-ck-open>Ustawienia cookies</button></li>
     <li><a href="https://www.hartphp.com.pl" target="_blank" rel="noopener">hartphp.com.pl</a></li>
   </ul>
   <span class="mono fclaim">© <span id="year">2026</span> HART X-Race · Braking without limits. Driven by&nbsp;performance.</span>
 </footer>
+
+<!-- cookie consent: shown on the first visit, reopened from "Ustawienia cookies" in the footer -->
+<section class="ck" id="cookies" role="dialog" aria-labelledby="ckT" aria-describedby="ckD" hidden>
+  <h2 id="ckT">Pliki <span class="red">cookies</span></h2>
+  <p id="ckD">Niezbędne pliki cookies pozwalają stronie działać. Za&nbsp;Twoją zgodą użyjemy też analitycznych, żeby wiedzieć, co&nbsp;poprawić, oraz marketingowych, żeby pokazywać trafniejsze reklamy X-Race. Zgodę zmienisz w&nbsp;każdej chwili w&nbsp;stopce. <a href="https://www.hartphp.com.pl/pliki-cookies" target="_blank" rel="noopener">Więcej o&nbsp;cookies</a></p>
+  <div class="ck-prefs" id="ckPrefs" hidden>
+    <label class="ck-opt"><span><b>Niezbędne</b><small>Działanie strony. Zawsze włączone.</small></span><input type="checkbox" checked disabled><i aria-hidden="true"></i></label>
+    <label class="ck-opt"><span><b>Analityczne</b><small>Statystyki odwiedzin (Google Analytics).</small></span><input type="checkbox" name="analytics"><i aria-hidden="true"></i></label>
+    <label class="ck-opt"><span><b>Marketingowe</b><small>Dopasowanie i&nbsp;pomiar reklam (Google Ads).</small></span><input type="checkbox" name="marketing"><i aria-hidden="true"></i></label>
+  </div>
+  <div class="ck-btns">
+    <button type="button" class="pill" data-ck="necessary">Tylko niezbędne</button>
+    <button type="button" class="pill" data-ck="prefs" aria-expanded="false" aria-controls="ckPrefs">Ustawienia</button>
+    <button type="button" class="pill" data-ck="save" hidden>Zapisz wybór</button>
+    <button type="button" class="pill red" data-ck="all">Akceptuję wszystkie</button>
+  </div>
+</section>
 
 <script src="js/filie.js" defer></script>
 <script src="js/main.js" defer></script>
