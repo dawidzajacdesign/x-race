@@ -18,3 +18,7 @@ Przy zmianach w CSS/JS podbij numer wersji w HTML (`style.css?v=…`, `main.js?v
 - ID filmu YouTube (`VIDEO_ID`) – szukaj `DO UZUPEŁNIENIA` w `index.html`.
 - Filie: `js/filie.js`.
 - Prawnik: zgoda pod formularzem, hasło „No risk.”, sekcje „Strona X-Race” w polityce i „Cookies na stronie X-Race” (oznaczone w kodzie).
+
+## Vercel
+Repozytorium = zawartość `public/` (z ukrytymi plikami `vercel.json` i `.vercelignore`). W Vercel: Framework Preset **Other**, bez Build Command, Output Directory puste (katalog główny).
+`vercel.json` ustawia nagłówki, cache i przekierowanie /index.html → /. Domenę `x-race.hartphp.pl` podepnij w Settings → Domains (CNAME na cname.vercel-dns.com); adres *.vercel.app ma canonical na docelową domenę, więc nie konkuruje w Google.
