@@ -1,27 +1,26 @@
-# X-Race – co się zmieniło i jak to uruchomić
+# X-Race – wdrożenie na hosting z PHP (Apache)
 
-## Nowe i zmienione pliki
-- `index.html` – nowe sekcje: Współpraca (dla firm i dla kierowców), Filie HART (mapa), formularz, stopka z danymi firmy; poprawione meta, tytuł, OG, nagłówki.
-- `css/style.css` – style nowych sekcji (na końcu pliku).
-- `js/main.js` – mapa z kropek, obsługa formularza, zdarzenia analityczne (`dataLayer`), przygaszanie ognia nad formularzem.
-- `js/filie.js` – **wszystkie 26 punktów HART** (Polska, Czechy, Słowacja) z hartphp.com.pl/kontakt. Zmiany adresów i nowe filie wpisujesz tutaj (instrukcja w pliku).
-- `api/contact.js` – funkcja Vercel, która wysyła zgłoszenia z formularza mailem przez Resend.
-- `robots.txt`
+Wgraj **zawartość** folderu `public/` do katalogu domeny (np. `public_html/`). Folder `../_poza-serwerem/` NIE trafia na serwer (oryginały grafik, stare pliki Vercel).
 
-## Uruchomienie formularza (jednorazowo)
-1. Załóż konto na https://resend.com i zweryfikuj domenę nadawcy (np. hartphp.com.pl – Resend poda rekordy DNS do dodania).
-2. Utwórz klucz API w Resend.
-3. W Vercel → projekt **x-race** → Settings → Environment Variables dodaj:
-   - `RESEND_API_KEY` – klucz z Resend
-   - `CONTACT_TO` – adres(y), na które mają trafiać zgłoszenia, np. `hart@hartphp.com.pl` (kilka po przecinku)
-   - `CONTACT_FROM` – nadawca ze zweryfikowanej domeny, np. `X-Race <formularz@hartphp.com.pl>`
-4. Wdróż stronę ponownie (Redeploy), żeby zmienne zaczęły działać.
+## Formularz (Resend)
+1. Na https://resend.com zweryfikuj domenę nadawcy (np. hartphp.com.pl – rekordy DNS poda Resend) i utwórz klucz API.
+2. Skopiuj `api/config.example.php` jako **`xrace-config.php` katalog WYŻEJ niż public_html** (bezpieczniej) albo jako `api/config.php`, i uzupełnij klucz oraz adresy.
+3. Wymagane PHP 7.4+ z rozszerzeniem cURL. Test: wyślij formularz – przy błędzie strona pokaże e-mail i telefon HART.
 
-Dopóki zmienne nie są ustawione, formularz pokaże komunikat o błędzie z gotowym linkiem „wyślij e-mailem” i numerem telefonu, więc żadne zapytanie nie przepadnie bez śladu.
+## Konfiguracja serwera
+- `.htaccess` – HTTPS, adres bez www, przekierowanie /index.html → /, nagłówki bezpieczeństwa, cache, kompresja.
+- Jeśli hosting to nginx (nie Apache), `.htaccess` nie działa – te same reguły trzeba ustawić w panelu/konfiguracji serwera.
+- Jeśli docelowy adres ma mieć www, odwróć regułę nr 2 w `.htaccess`.
+
+## Domena
+Docelowy adres `https://x-race.hartphp.pl` jest już wpisany w: `index.html` (canonical, og:*, twitter:image, JSON-LD), `robots.txt`, `sitemap.xml`.
+Starą wersję na vercel.app usuń albo przekieruj 301 na nową domenę. Potem zgłoś sitemapę w Google Search Console.
 
 ## Do uzupełnienia przed premierą
-- **Filie:** współrzędne w `js/filie.js` są z dokładnością do dzielnicy; jeśli chcesz kropki co do adresu, popraw lat/lon (Mapy Google → prawy klik na pinezce).
-- **Homologacja R90 i PDF z zastosowaniami:** w `index.html` szukaj `DO UZUPEŁNIENIA`.
-- **Domena:** po podpięciu docelowej domeny zamień `https://x-race.vercel.app` w `index.html` (canonical, og:url, og:image, JSON-LD).
-- **Analityka:** kod GTM jest w komentarzu w `<head>`. Przed włączeniem potrzebny jest baner zgód na cookies.
-- **Prawnik:** treść zgody pod formularzem oraz hasło „No risk.” w sekcji z hasłami z opakowania.
+- ID filmu YouTube (`VIDEO_ID`) – szukaj `DO UZUPEŁNIENIA` w `index.html`.
+- Filie: `js/filie.js`.
+- Prawnik: treść zgody pod formularzem oraz hasło „No risk.”.
+
+## Autoresponder i polityka prywatności
+- Po wysłaniu formularza klient dostaje potwierdzenie. Treść i wygląd: `api/autoresponder.html` (zmienne w `{{...}}` wypełnia `api/contact.php`). Odpowiedź klienta trafia na `REPLY_TO` z configu.
+- `polityka-prywatnosci.html` – treść przeniesiona z hartphp.com.pl + sekcja „Strona X-Race” (oznaczona w kodzie DO ZATWIERDZENIA PRZEZ PRAWNIKA).

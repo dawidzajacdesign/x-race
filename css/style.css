@@ -73,7 +73,7 @@ html.loading,html.loading body{overflow:hidden}
 .lang summary svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:1.6;transition:transform .25s}
 .lang[open] summary svg{transform:rotate(180deg)}
 .nav .lang ul{display:flex;flex-direction:column;gap:2px;position:absolute;right:0;top:calc(100% + 8px);min-width:170px;margin:0;padding:6px;list-style:none;background:rgba(10,10,12,.96);border:1px solid var(--g700);border-radius:14px;backdrop-filter:blur(10px)}
-.lang a{display:flex;justify-content:space-between;gap:12px;padding:.6em .8em;border-radius:9px;font-size:.85rem;font-weight:600;color:var(--fg);text-decoration:none}
+.lang a{display:grid;grid-template-columns:2.2em 1fr;justify-items:start;gap:10px;text-align:left;padding:.6em .8em;border-radius:9px;font-size:.85rem;font-weight:600;color:var(--fg);text-decoration:none}
 .lang a span{font-weight:400;color:var(--g400)}
 .lang a:hover{background:rgba(245,245,243,.08)}
 .lang a[aria-current]{color:var(--red)}
@@ -450,7 +450,9 @@ footer{position:relative;z-index:3;display:flex;justify-content:space-between;ga
   .hero .ctas{flex-wrap:wrap}
   .hero .ph video,.hero .ph img{object-position:78% 50%}
   .hero .shade{background:linear-gradient(0deg,rgba(0,0,0,1) 10%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.35) 80%,rgba(0,0,0,.7))}
-  .xscene{height:auto}
+  .xscene,.xscene:has(.mix){height:auto}
+  .nav{gap:10px}
+  .nav .pill{white-space:nowrap;padding:.7em 1.1em;font-size:.88rem}
   .xscene .stage,.xscene.rev .stage{position:relative;height:auto;grid-template-columns:minmax(0,1fr);padding-block:110px 60px;gap:40px}
   .dcopy .sub{opacity:1;transform:none}
   .callout{display:none}
