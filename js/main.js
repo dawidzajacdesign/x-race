@@ -281,8 +281,9 @@ function update(){
   // product layers, one after another (box, drum, disc, pads): each starts centred on screen, large, blurred and dark,
   // then shrinks into its place while it sharpens and brightens. The box starts filling the viewport, the rest start smaller.
   const lp=clamp((q-.56)/(480/340-.56));
-  lineSet.style.setProperty('--gs',lerp(1.12,.9,ease(clamp((lp-.2)/.8))).toFixed(3));
-  { const gs=+lineSet.style.getPropertyValue('--gs')||1, W=lineSet.offsetWidth, H=lineSet.offsetHeight, cy=vh*.61;
+  const mob=innerWidth<=860;   // phone: set 30% larger, lower, tag stops lower so the pair sits centred
+  lineSet.style.setProperty('--gs',(lerp(1.12,.9,ease(clamp((lp-.2)/.8)))*(mob?1.3:1)).toFixed(3));
+  { const gs=+lineSet.style.getPropertyValue('--gs')||1, W=lineSet.offsetWidth, H=lineSet.offsetHeight, cy=vh*(mob?.68:.61);
     lineSets.forEach((el,i)=>{
       const a=i?.3+i*.13:.2, s=ease(clamp((lp-a)/(i?.3:.28)));
       const ew=el.offsetWidth, eh=el.offsetHeight;
@@ -298,7 +299,7 @@ function update(){
       el.style.setProperty('--lv',(.2+.8*s).toFixed(3));}); }
   // tag rises from the centre to the top and stays above the products
   const up=ease(clamp(lp/.3));
-  lineTag.style.top=lerp(50,26,up).toFixed(2)+'%'; lineTag.style.setProperty('--tf',up.toFixed(3)); lineTag.style.setProperty('--sk',(-14*up).toFixed(2)+'deg'); lineTag.style.setProperty('--lz',(1+.3*up).toFixed(3));
+  lineTag.style.top=lerp(50,mob?36:26,up).toFixed(2)+'%'; lineTag.style.setProperty('--tf',up.toFixed(3)); lineTag.style.setProperty('--sk',(-14*up).toFixed(2)+'deg'); lineTag.style.setProperty('--lz',(1+.3*up).toFixed(3));
   lineTag.style.setProperty('--t',z.toFixed(3)); lineTag.style.setProperty('--ts',(0.6+0.4*z).toFixed(3));
 
   // rail

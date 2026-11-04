@@ -509,7 +509,7 @@ footer{position:relative;z-index:3;display:flex;justify-content:space-between;ga
 @media (min-width:861px){.icons.hs{height:520vh}}
 .line-tag h2{font-size:clamp(1.8rem,5vw,5.4rem);white-space:nowrap}
 .mbr{display:none}
-@media (max-width:860px){.line-tag .mbr{display:inline}.line-tag h2{line-height:1.05}}
+@media (max-width:860px){.line-tag .mbr{display:inline}.line-tag h2{font-size:clamp(1.8rem,9.6vw,2.6rem);line-height:1.2}.line-tag .kw{line-height:1.5}#linia .line-set{top:68%}}
 
 /* ===== added: partnership paths, dotted map of HART points, inquiry form, legal footer ===== */
 .tag{display:inline-block;align-self:flex-start;font-family:var(--f-body);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--red);padding:.35em .9em;transform:skewX(-14deg)}
