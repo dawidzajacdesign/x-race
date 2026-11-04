@@ -330,10 +330,10 @@ html.loading,html.loading body{overflow:hidden}
 .claims-word{position:absolute;z-index:-1;left:50%;right:0;top:50%;transform:translateY(-50%);pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 18%);mask-image:linear-gradient(90deg,transparent,#000 18%)}
 .claims-word svg{display:block;width:260%;height:auto;transform:translateX(-4%);will-change:transform;animation:wordDrift 38s ease-in-out infinite alternate;overflow:visible}
 .claims-word text{font-family:var(--f-outline);font-weight:900;font-size:260px;letter-spacing:-6px;fill:none;stroke:var(--red);stroke-opacity:.6;stroke-width:2}
-@media (max-width:860px){.claims-word{left:0}}
 @media (prefers-reduced-motion:reduce){.claims-word svg{animation:none}}
 .claims-layer{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:center;padding-inline:calc(var(--gutter) + 150px) var(--gutter);transform-origin:32% 50%;transform:scale(var(--cz,1));opacity:var(--co,1);filter:blur(var(--cb,0px));will-change:transform,opacity;pointer-events:none}
 @media (max-width:1100px){.claims-layer{padding-inline:var(--gutter)}}
+@media (max-width:860px){.claims-word{left:0;top:auto;bottom:16%;transform:none}.claims-word svg{width:420%}.claims-layer{justify-content:flex-start;padding-top:calc(88px + 14vh)}.cl{font-size:clamp(2.2rem,11vw,3.4rem)}}
 .line-tag{transform-origin:50% 50%;scale:var(--ts,1)}
 .line-tag .lim{display:inline-block;color:transparent;transform-origin:0 100%;transform:skewX(var(--sk,0deg)) scale(var(--lz,1))}
 .line-tag{position:absolute;z-index:3;left:0;right:0;top:50%;transform:translateY(-50%);display:flex;justify-content:center;text-align:center;opacity:var(--t,1);pointer-events:none}
@@ -468,6 +468,8 @@ footer{position:relative;z-index:3;display:flex;justify-content:space-between;ga
   .gauge{display:none}
   .heat-copy{padding-inline:var(--gutter);grid-template-columns:minmax(0,1fr)}
   .heat-copy .step{grid-area:1/1}
+  .heat-copy{padding-top:88px}
+  .heat-ph img{transform:translateY(-12%) scale(calc(var(--z,1.12) * 1.25))}
   .cgrid{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:560px){
