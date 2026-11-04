@@ -1,26 +1,20 @@
-# X-Race – wdrożenie na hosting z PHP (Apache)
+# X-Race – wdrożenie na hosting (Apache)
 
-Wgraj **zawartość** folderu `public/` do katalogu domeny (np. `public_html/`). Folder `../_poza-serwerem/` NIE trafia na serwer (oryginały grafik, stare pliki Vercel).
+Wgraj **zawartość** folderu `public/` do katalogu domeny `x-race.hartphp.pl` (np. `public_html/`). Foldery `../_poza-serwerem/` i `../email/` NIE trafiają na serwer.
 
-## Formularz (Resend)
-1. Na https://resend.com zweryfikuj domenę nadawcy (np. hartphp.com.pl – rekordy DNS poda Resend) i utwórz klucz API.
-2. Skopiuj `api/config.example.php` jako **`xrace-config.php` katalog WYŻEJ niż public_html** (bezpieczniej) albo jako `api/config.php`, i uzupełnij klucz oraz adresy.
-3. Wymagane PHP 7.4+ z rozszerzeniem cURL. Test: wyślij formularz – przy błędzie strona pokaże e-mail i telefon HART.
+## Formularz
+Na razie bez wysyłki: po „Wyślij zgłoszenie” pokazuje się tylko potwierdzenie (zdarzenia trafiają do dataLayer/GTM).
+Wysyłka maili (Resend) powstanie po tłumaczeniach i akceptacji treści. Gotowy szablon autorespondera: `../email/autoresponder.html` (logo: `img/logo-mail.png`).
 
 ## Konfiguracja serwera
 - `.htaccess` – HTTPS, adres bez www, przekierowanie /index.html → /, nagłówki bezpieczeństwa, cache, kompresja.
-- Jeśli hosting to nginx (nie Apache), `.htaccess` nie działa – te same reguły trzeba ustawić w panelu/konfiguracji serwera.
-- Jeśli docelowy adres ma mieć www, odwróć regułę nr 2 w `.htaccess`.
+- Jeśli hosting to nginx, te same reguły trzeba ustawić w konfiguracji serwera.
 
 ## Domena
-Docelowy adres `https://x-race.hartphp.pl` jest już wpisany w: `index.html` (canonical, og:*, twitter:image, JSON-LD), `robots.txt`, `sitemap.xml`.
-Starą wersję na vercel.app usuń albo przekieruj 301 na nową domenę. Potem zgłoś sitemapę w Google Search Console.
+Adres `https://x-race.hartphp.pl` jest wpisany w: `index.html`, `polityka-prywatnosci.html`, `pliki-cookies.html` (canonical, og:*, JSON-LD), `robots.txt`, `sitemap.xml`. Po wdrożeniu zgłoś sitemapę w Google Search Console.
+Przy zmianach w CSS/JS podbij numer wersji w HTML (`style.css?v=…`, `main.js?v=…`).
 
 ## Do uzupełnienia przed premierą
 - ID filmu YouTube (`VIDEO_ID`) – szukaj `DO UZUPEŁNIENIA` w `index.html`.
 - Filie: `js/filie.js`.
-- Prawnik: treść zgody pod formularzem oraz hasło „No risk.”.
-
-## Autoresponder i polityka prywatności
-- Po wysłaniu formularza klient dostaje potwierdzenie. Treść i wygląd: `api/autoresponder.html` (zmienne w `{{...}}` wypełnia `api/contact.php`). Odpowiedź klienta trafia na `REPLY_TO` z configu.
-- `polityka-prywatnosci.html` – treść przeniesiona z hartphp.com.pl + sekcja „Strona X-Race” (oznaczona w kodzie DO ZATWIERDZENIA PRZEZ PRAWNIKA).
+- Prawnik: zgoda pod formularzem, hasło „No risk.”, sekcje „Strona X-Race” w polityce i „Cookies na stronie X-Race” (oznaczone w kodzie).

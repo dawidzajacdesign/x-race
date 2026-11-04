@@ -587,25 +587,17 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     // no validation for now: every step moves on whatever is filled in
     if(step<steps.length-1){show(step+1);track('xrace_form_step',{step:step+1});steps[step].querySelector('input:not([type=radio])')?.focus();return;}
 
+    // TODO: wysyłka maili (Resend + autoresponder z email/autoresponder.html) po tłumaczeniach i akceptacji; na razie zgłoszenie nigdzie nie trafia, pokazujemy tylko potwierdzenie
     const d=Object.fromEntries(new FormData(form).entries());
-    btn.disabled=true; say('Wysyłanie…');
-    fetch('api/contact.php',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({...d,zgoda:!!d.zgoda,filia:branch?branch.miasto:'',strona:location.href})})
-    .then(r=>r.json().catch(()=>({ok:false})).then(j=>{if(!r.ok||!j.ok)throw j;}))
-    .then(()=>{
+    btn.disabled=true;
+    setTimeout(()=>{
       btn.disabled=false;
       track('xrace_form_submit',{typ:d.typ});
       const where=branch?`do&nbsp;filii HART w&nbsp;${branch.miasto}`:'do&nbsp;najbliższej filii HART';
       $('#fDoneTxt').innerHTML=`Witamy w&nbsp;gronie partnerów X-Race. Przekazaliśmy zgłoszenie ${where}, a&nbsp;handlowiec odezwie się${d.email?' na&nbsp;<b></b>':''} z&nbsp;ofertą dla Twojego ${(TYP[d.typ]||TYP.sklep)[1]}. Już niedługo Twoi klienci będą hamować później i&nbsp;wychodzić z&nbsp;zakrętów mocniej.`;
       if(d.email) $('#fDoneTxt b').textContent=d.email;
       form.hidden=true; done.hidden=false; done.focus();
-    }).catch(j=>{
-      btn.disabled=false;
-      if(j&&j.error==='invalid'){say(j.fields&&j.fields.includes('zgoda')?'Zaznacz zgodę na kontakt.':'Uzupełnij poprawnie wymagane pola (*).','err');return;}
-      status.className='fstatus err';
-      status.innerHTML='Nie udało się wysłać zgłoszenia. Napisz na <a href="mailto:hart@hartphp.com.pl?subject=X-Race%20-%20zg%C5%82oszenie%20partnera">hart@hartphp.com.pl</a> lub zadzwoń: <a href="tel:+48774539626">77 453 96 26</a>.';
-      track('xrace_form_error',{error:(j&&j.error)||'network'});
-    });
+    },500);
   });
 
   $('#fReset').addEventListener('click',()=>{
