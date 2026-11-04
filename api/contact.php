@@ -112,6 +112,7 @@ if ($tpl !== false) {
     '{{filia_txt}}' => $d['filia'] !== '' ? 'do&nbsp;filii HART w&nbsp;' . $e($d['filia']) : 'do&nbsp;najbliższej filii HART',
     '{{wiersze}}' => $rowsHtml,
     '{{strona}}' => $base,
+    '{{logo}}' => $base . 'img/logo-mail.png',
     '{{polityka}}' => $base . 'polityka-prywatnosci.html',
   ]);
   $html2 = preg_replace('/<!--.*?-->/s', '', $html2);

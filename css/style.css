@@ -451,8 +451,11 @@ footer{position:relative;z-index:3;display:flex;justify-content:space-between;ga
   .hero .ph video,.hero .ph img{object-position:78% 50%}
   .hero .shade{background:linear-gradient(0deg,rgba(0,0,0,1) 10%,rgba(0,0,0,.55) 55%,rgba(0,0,0,.35) 80%,rgba(0,0,0,.7))}
   .xscene,.xscene:has(.mix){height:auto}
+  .xscene .dmedia{order:-1}
+  #manifest .stage{padding-top:88px}
+  #manifest .mx{top:calc(50% + 44px)}
   .nav{gap:10px}
-  .nav .pill{white-space:nowrap;padding:.7em 1.1em;font-size:.88rem}
+  .nav .pill{white-space:nowrap;height:44px;min-height:44px;padding:0 1.1em;font-size:.85rem;line-height:1}
   .xscene .stage,.xscene.rev .stage{position:relative;height:auto;grid-template-columns:minmax(0,1fr);padding-block:110px 60px;gap:40px}
   .dcopy .sub{opacity:1;transform:none}
   .callout{display:none}
@@ -505,6 +508,8 @@ footer{position:relative;z-index:3;display:flex;justify-content:space-between;ga
 }
 @media (min-width:861px){.icons.hs{height:520vh}}
 .line-tag h2{font-size:clamp(1.8rem,5vw,5.4rem);white-space:nowrap}
+.mbr{display:none}
+@media (max-width:860px){.line-tag .mbr{display:inline}.line-tag h2{line-height:1.05}}
 
 /* ===== added: partnership paths, dotted map of HART points, inquiry form, legal footer ===== */
 .tag{display:inline-block;align-self:flex-start;font-family:var(--f-body);font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--red);padding:.35em .9em;transform:skewX(-14deg)}
