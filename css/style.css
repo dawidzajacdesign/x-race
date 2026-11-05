@@ -61,6 +61,7 @@ html.loading,html.loading body{overflow:hidden}
 .nav ul a:hover{color:var(--fg)}
 .pill{display:inline-flex;align-items:center;gap:.6em;font-family:var(--f-body);font-size:.95rem;font-weight:600;letter-spacing:0;min-height:44px;text-decoration:none;color:var(--fg);padding:.85em 1.4em;border:1px solid rgba(245,245,243,.28);border-radius:999px;background:rgba(0,0,0,.3);transition:background .25s,border-color .25s,color .25s;cursor:pointer}
 .pill:hover{background:var(--fg);color:var(--ink);border-color:var(--fg)}
+.pill[href="#formularz"]:not(.red):hover{background:var(--red);border-color:var(--red);color:#fff}
 .pill.red{background:var(--red);border-color:var(--red);color:#fff}
 .pill.red:hover{background:#fff;color:var(--ink);border-color:#fff}
 .pill svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
@@ -569,6 +570,9 @@ p{text-wrap:pretty}
 .br-map{position:relative;width:min(100%,900px);margin-top:clamp(40px,5vw,70px)}
 .br-map::before{content:"";position:absolute;inset:8% 6%;background:radial-gradient(ellipse at 50% 45%,rgba(227,26,34,.16),rgba(227,26,34,0) 65%);filter:blur(24px);pointer-events:none}
 #plMap{position:relative;z-index:1;display:block;width:100%;height:auto;max-height:86vh;overflow:visible}
+/* Europe map (EN/DE/HU/LT/NL/FR/ES): 30% larger than the single-country maps; the height cap grows with it, otherwise it would cancel the enlargement */
+html[data-map="EU"] .br-map{width:min(100%,1170px)}
+html[data-map="EU"] #plMap{max-height:112vh}
 .br-dots{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none}
 #plMap .mk{opacity:0;transition:opacity .6s .9s;cursor:pointer}
 #plMap.in .mk{opacity:1}
@@ -664,6 +668,8 @@ p{text-wrap:pretty}
 body>footer{display:grid;grid-template-columns:minmax(0,1.3fr) auto;gap:18px 40px;align-items:start}
 .fco{display:flex;flex-direction:column;gap:3px;font-size:.88rem;color:var(--g400);line-height:1.5}
 .fco strong{color:var(--g200);font-weight:700}
+.fco a{color:var(--g200);text-decoration:underline;text-decoration-color:rgba(245,245,243,.3);text-underline-offset:3px;transition:color .2s,text-decoration-color .2s}
+.fco a:hover{color:#fff;text-decoration-color:var(--red)}
 .flinks{list-style:none;margin:0;padding:0;display:flex;gap:22px;flex-wrap:wrap}
 .flinks a{font-size:.9rem;color:var(--g200);text-decoration:none}
 .flinks a:hover{color:var(--red)}

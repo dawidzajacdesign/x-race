@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#040405">
+<meta name="robots" content="noindex">
+<title>404 | HART X-Race</title>
+<!-- Strona błędu 404. Ścieżki zaczynają się od "/", bo strona może się pokazać pod dowolnym adresem (np. /de/cos/innego).
+     Język: z pierwszego członu adresu (/en/, /de/…), a gdy go nie ma – z języka przeglądarki. -->
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<script>if(location.protocol==='file:')document.querySelector('link[rel=icon]').href='img/favicon.svg';</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Urbanist:wght@800;900&display=swap">
+<!-- style wbudowane (bez css/style.css): strona działa pod każdym adresem i po otwarciu z dysku -->
+<style>
+  :root{--fg:#f5f5f3;--ink:#040405;--red:#e31a22;--g400:#a6a7ae;--gutter:20px}
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--ink);color:var(--fg);font-family:Manrope,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 60% 45% at 50% 62%,rgba(227,26,34,.22),rgba(227,26,34,0) 70%);pointer-events:none}
+  .pill{display:inline-flex;align-items:center;gap:.6em;font-size:.95rem;font-weight:600;min-height:44px;text-decoration:none;color:var(--fg);padding:.85em 1.4em;border:1px solid rgba(245,245,243,.28);border-radius:999px;background:rgba(0,0,0,.3);transition:background .25s,border-color .25s,color .25s}
+  .pill:hover{background:var(--red);border-color:var(--red);color:#fff}
+  .pill.red{background:var(--red);border-color:var(--red);color:#fff}
+  .pill.red:hover{background:#fff;color:var(--ink);border-color:#fff}
+  .pill:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .e404{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:48px var(--gutter,20px);text-align:center;position:relative;overflow:hidden}
+  .e404 .logo{width:150px;height:auto}
+  .e404 .num{font-family:Urbanist,Manrope,sans-serif;font-weight:900;font-size:clamp(120px,24vw,260px);line-height:.85;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:2px rgba(245,245,243,.22);margin:6px 0 0}
+  .e404 .num span{color:#e31a22;-webkit-text-stroke:0}
+  .e404 h1{font-family:Urbanist,Manrope,sans-serif;font-weight:900;text-transform:uppercase;font-size:clamp(28px,4.4vw,46px);line-height:1.02;margin:0;max-width:16ch}
+  .e404 p{margin:0;max-width:44ch;color:var(--g400,#a6a7ae);font-size:1.02rem;line-height:1.6}
+  .e404 .ctas{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:6px}
+</style>
+</head>
+<body>
+<main class="e404">
+  <a href="/" id="home1" aria-label="HART X-Race"><img class="logo" src="/img/logo.svg" onerror="this.onerror=null;this.src='img/logo.svg'" alt="HART X-Race" width="150" height="41"></a>
+  <p class="num" aria-hidden="true">4<span>0</span>4</p>
+  <h1 id="t">Ta strona zjechała z&nbsp;toru.</h1>
+  <p id="d">Nie znaleźliśmy strony pod tym adresem. Mogła zostać przeniesiona albo w&nbsp;adresie jest literówka.</p>
+  <div class="ctas">
+    <a class="pill red" href="/" id="home2">Wróć do X-Race</a>
+    <a class="pill" href="/#formularz" id="form">Zostań partnerem</a>
+  </div>
+</main>
+<script>(function(){
+  var T={
+    pl:['','Ta strona zjechała z toru.','Nie znaleźliśmy strony pod tym adresem. Mogła zostać przeniesiona albo w adresie jest literówka.','Wróć do X-Race','Zostań partnerem'],
+    en:['en','This page went off track.','We couldn\'t find a page at this address. It may have moved, or there is a typo in the address.','Back to X-Race','Become a partner'],
+    de:['de','Diese Seite ist von der Strecke abgekommen.','Unter dieser Adresse haben wir keine Seite gefunden. Sie wurde vielleicht verschoben, oder die Adresse enthält einen Tippfehler.','Zurück zu X-Race','Partner werden'],
+    cs:['cz','Tahle stránka vyjela z trati.','Na této adrese jsme stránku nenašli. Možná byla přesunuta nebo je v adrese překlep.','Zpět na X-Race','Staňte se partnerem'],
+    sk:['sk','Táto stránka vyšla z trate.','Na tejto adrese sme stránku nenašli. Možno bola presunutá alebo je v adrese preklep.','Späť na X-Race','Staňte sa partnerom'],
+    hu:['hu','Ez az oldal letért a pályáról.','Ezen a címen nem találtunk oldalt. Lehet, hogy áthelyezték, vagy elírás van a címben.','Vissza az X-Race-hez','Legyen partnerünk'],
+    lt:['lt','Šis puslapis nulėkė nuo trasos.','Šiuo adresu puslapio neradome. Galbūt jis perkeltas arba adrese yra klaida.','Grįžti į X-Race','Tapkite partneriu'],
+    nl:['nl','Deze pagina is uit de bocht gevlogen.','Op dit adres hebben we geen pagina gevonden. Misschien is hij verplaatst of staat er een typfout in het adres.','Terug naar X-Race','Word partner'],
+    fr:['fr','Cette page est sortie de la piste.','Nous n\'avons trouvé aucune page à cette adresse. Elle a peut-être été déplacée, ou l\'adresse contient une faute de frappe.','Retour à X-Race','Devenir partenaire'],
+    es:['es','Esta página se ha salido de la pista.','No hemos encontrado ninguna página en esta dirección. Puede que se haya movido o que haya un error en la dirección.','Volver a X-Race','Hágase partner']
+  };
+  var dirs={en:'en',de:'de',cz:'cs',sk:'sk',hu:'hu',lt:'lt',nl:'nl',fr:'fr',es:'es'};
+  var seg=(location.pathname.split('/')[1]||'').toLowerCase(), lang=dirs[seg];
+  if(!lang){var saved=null;try{saved=localStorage.getItem('xr_lang');}catch(e){}
+    var list=saved?[saved]:(navigator.languages&&navigator.languages.length?navigator.languages:[navigator.language||'pl']);
+    for(var i=0;i<list.length;i++){var c=String(list[i]).toLowerCase().slice(0,2);if(T[c]){lang=c;break;}}}
+  var t=T[lang]||T.pl, home='/'+(t[0]?t[0]+'/':'');
+  document.documentElement.lang=lang||'pl';
+  document.getElementById('t').textContent=t[1];
+  document.getElementById('d').textContent=t[2];
+  document.getElementById('home2').textContent=t[3];
+  document.getElementById('form').textContent=t[4];
+  document.getElementById('home1').href=document.getElementById('home2').href=home;
+  document.getElementById('form').href=home+'#formularz';
+})();</script>
+</body>
+</html>

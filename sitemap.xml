@@ -1,13 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Przy wersjach językowych dodaj wpisy z xhtml:link hreflang. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<!-- Wersje językowe generuje _poza-serwerem/i18n/build.ps1. Każdy adres ma pełny zestaw hreflang (wymóg Google). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://x-race.hartphp.pl/</loc>
-    <lastmod>2026-11-04</lastmod>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
     <image:image><image:loc>https://x-race.hartphp.pl/img/og.jpg</image:loc></image:image>
     <image:image><image:loc>https://x-race.hartphp.pl/img/discs.webp</image:loc></image:image>
     <image:image><image:loc>https://x-race.hartphp.pl/img/pads.webp</image:loc></image:image>
     <image:image><image:loc>https://x-race.hartphp.pl/img/klocki_sekcja.webp</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/en/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/de/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/cz/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/sk/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/hu/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/lt/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/nl/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/fr/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
+  </url>
+  <url>
+    <loc>https://x-race.hartphp.pl/es/</loc>
+    <lastmod>2026-11-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pl" href="https://x-race.hartphp.pl/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://x-race.hartphp.pl/en/"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://x-race.hartphp.pl/de/"/>
+    <xhtml:link rel="alternate" hreflang="cs" href="https://x-race.hartphp.pl/cz/"/>
+    <xhtml:link rel="alternate" hreflang="sk" href="https://x-race.hartphp.pl/sk/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://x-race.hartphp.pl/hu/"/>
+    <xhtml:link rel="alternate" hreflang="lt" href="https://x-race.hartphp.pl/lt/"/>
+    <xhtml:link rel="alternate" hreflang="nl" href="https://x-race.hartphp.pl/nl/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://x-race.hartphp.pl/fr/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://x-race.hartphp.pl/es/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://x-race.hartphp.pl/en/"/>
   </url>
   <url>
     <loc>https://x-race.hartphp.pl/polityka-prywatnosci.html</loc>
@@ -17,4 +163,23 @@
     <loc>https://x-race.hartphp.pl/pliki-cookies.html</loc>
     <lastmod>2026-11-04</lastmod>
   </url>
+  <!-- strony prawne w wersjach językowych (hreflang jest w <head> każdej z nich) -->
+  <url><loc>https://x-race.hartphp.pl/en/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/en/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/de/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/de/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/cz/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/cz/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/sk/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/sk/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/hu/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/hu/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/lt/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/lt/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/nl/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/nl/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/fr/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/fr/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/es/polityka-prywatnosci.html</loc><lastmod>2026-11-05</lastmod></url>
+  <url><loc>https://x-race.hartphp.pl/es/pliki-cookies.html</loc><lastmod>2026-11-05</lastmod></url>
 </urlset>

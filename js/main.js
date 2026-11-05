@@ -9,6 +9,24 @@ const lerp=(a,b,t)=>a+(b-a)*t;
 const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
 const easeOut=t=>1-Math.pow(1-t,3);
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+// UI strings built in JS; language versions set window.XRACE_T inline, Polish is the fallback
+const T=Object.assign({
+  countries:{PL:'Polska',CZ:'Czechy',SK:'Słowacja'},
+  gauge:['Niska','Wysoka','Maksymalna'],
+  collapse:'Zwiń listę', showAll:'Pokaż wszystkie ({n})', route:'Wyznacz trasę',
+  next:'Dalej', send:'Wyślij zgłoszenie', step:'Krok {i} z {n}',
+  near:'Najbliżej: {city}, {type} HART', hq:'centrala', branch:'filia',
+  typ:{sklep:['Sklep','sklepu'],warsztat:['Warsztat','warsztatu'],hurtownia:['Hurtownia','hurtowni']},
+  fill:'Uzupełnij zaznaczone pole.',
+  v:{firma:'Podaj nazwę firmy.',miasto:'Podaj miejscowość, w której działasz.',osoba:'Podaj imię i nazwisko.',email:'Podaj adres e-mail.',emailBad:'Ten adres e-mail wygląda na niepełny, np. jan@firma.pl.',telefon:'Numer telefonu może zawierać tylko cyfry, spacje, +, - i nawiasy (min. 9 znaków).',zgoda:'Zaznacz zgodę na kontakt, żebyśmy mogli odpowiedzieć.'}, sending:'Wysyłamy…', error:'Nie udało się wysłać zgłoszenia. Spróbuj ponownie albo zadzwoń: +48 77 453 96 26.', limit:'Wysłano już kilka zgłoszeń z tego adresu. Spróbuj za godzinę albo zadzwoń: +48 77 453 96 26.',
+  doneTo:'do&nbsp;filii HART w&nbsp;{city}', doneNear:'do&nbsp;najbliższej filii HART', doneEmail:' na&nbsp;<b></b>',
+  done:'Witamy w&nbsp;gronie partnerów X-Race. Przekazaliśmy zgłoszenie {where}, a&nbsp;handlowiec odezwie się{email} z&nbsp;ofertą dla Twojego {for}. Już niedługo Twoi klienci będą hamować później i&nbsp;wychodzić z&nbsp;zakrętów mocniej.'
+},window.XRACE_T||{});
+// opened from disk (file://) a folder link shows a directory listing, so point it at the folder's index.html
+if(location.protocol==='file:') $$('a[href]').forEach(a=>{const h=a.getAttribute('href');if(/^(\.{1,2}\/|[a-z]{2}\/|\.\.\/[a-z]{2}\/)$/.test(h)) a.setAttribute('href',h+'index.html');});
+// a language picked from the menu wins over the browser language next time (see the script in <head>)
+$$('#lang a[hreflang]').forEach(a=>a.addEventListener('click',()=>{try{localStorage.setItem('xr_lang',a.getAttribute('hreflang'));}catch(e){}}));
+const fmt=(s,o)=>s.replace(/\{(\w+)\}/g,(m,k)=>k in o?o[k]:m);
 
 /* heading gradient: wrap each plain white text run of h1/h2 in .gt; coloured or outlined words are skipped */
 $$('h1,h2').forEach(h=>{
@@ -189,7 +207,7 @@ function update(){
   heatImg.style.setProperty('--z',lerp(1.0,1.25,clamp(hp2)).toFixed(3));
   const si=hp2<.33?0:hp2<.66?1:2; steps.forEach((s,i)=>s.classList.toggle('on',i===si));   // one disc photo behind all three steps
   gauge.style.setProperty('--h',lerp(.06,1,clamp(hp2/.85)).toFixed(3));
-  gaugeLbl.textContent=hp2<.3?'Niska':hp2<.65?'Wysoka':'Maksymalna';
+  gaugeLbl.textContent=T.gauge[hp2<.3?0:hp2<.65?1:2];
 
   // product scenes: X window opens around the photo, subtext and callouts appear with scroll
   xscenes.forEach(S=>{
@@ -414,14 +432,22 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
   const PL=[[14.21,53.94],[14.45,53.93],[14.78,54.03],[15.58,54.18],[16.40,54.43],[16.85,54.59],[17.55,54.76],[18.33,54.83],[18.42,54.78],[18.55,54.52],[18.66,54.40],[19.00,54.36],[19.45,54.38],[19.63,54.45],[20.00,54.41],[20.50,54.38],[21.00,54.36],[21.50,54.33],[22.00,54.34],[22.79,54.36],[23.00,54.18],[23.30,54.05],[23.51,53.95],[23.75,53.50],[23.80,53.25],[23.93,53.00],[23.93,52.75],[23.65,52.50],[23.20,52.30],[23.55,52.10],[23.65,51.85],[23.62,51.53],[23.70,51.30],[24.11,50.86],[24.05,50.55],[23.70,50.38],[23.45,50.25],[23.05,49.98],[22.88,49.75],[22.65,49.55],[22.75,49.25],[22.56,49.08],[22.10,49.20],[21.80,49.38],[21.30,49.43],[20.90,49.35],[20.55,49.42],[20.20,49.33],[20.05,49.20],[19.80,49.20],[19.75,49.40],[19.47,49.60],[19.15,49.42],[18.85,49.52],[18.60,49.75],[18.55,49.92],[18.25,49.95],[17.85,50.05],[17.65,50.27],[17.20,50.38],[16.90,50.45],[16.85,50.20],[16.65,50.10],[16.45,50.32],[16.20,50.60],[16.05,50.65],[15.75,50.74],[15.30,50.85],[15.00,51.00],[14.82,50.87],[14.99,51.15],[14.97,51.40],[14.73,51.60],[14.60,51.85],[14.70,52.10],[14.55,52.35],[14.60,52.60],[14.15,52.85],[14.40,53.30],[14.27,53.70]];
   const CZ=[[12.09,50.32],[12.50,50.40],[13.00,50.50],[13.40,50.63],[13.85,50.73],[14.30,50.88],[14.40,51.04],[14.82,50.87],[15.00,51.00],[15.30,50.85],[15.75,50.74],[16.05,50.65],[16.20,50.60],[16.45,50.32],[16.65,50.10],[16.85,50.20],[16.90,50.45],[17.20,50.38],[17.65,50.27],[17.85,50.05],[18.25,49.95],[18.55,49.92],[18.60,49.75],[18.85,49.52],[18.40,49.35],[18.10,49.10],[17.75,48.92],[17.40,48.82],[16.95,48.62],[16.55,48.80],[16.10,48.75],[15.60,48.90],[15.10,49.00],[14.95,48.78],[14.70,48.58],[14.30,48.58],[13.80,48.78],[13.50,48.95],[13.10,49.20],[12.75,49.40],[12.50,49.70],[12.40,49.95],[12.20,50.10]];
   const SK=[[18.85,49.52],[19.15,49.42],[19.47,49.60],[19.75,49.40],[19.80,49.20],[20.05,49.20],[20.20,49.33],[20.55,49.42],[20.90,49.35],[21.30,49.43],[21.80,49.38],[22.10,49.20],[22.56,49.08],[22.40,48.70],[22.15,48.40],[21.70,48.35],[21.45,48.57],[20.85,48.55],[20.45,48.45],[20.15,48.25],[19.75,48.20],[19.45,48.10],[19.00,48.07],[18.80,47.85],[18.40,47.75],[17.75,47.75],[17.25,48.00],[17.10,48.10],[16.95,48.62],[17.40,48.82],[17.75,48.92],[18.10,49.10],[18.40,49.35]];
-  const K=100, CX=Math.cos(51*Math.PI/180), LON0=11.85, LAT0=55;
+  // which map this language version shows: <html data-map="PL|CZ|SK|EU">; EU draws Europe with every HART point
+  const MODE=document.documentElement.dataset.map||'PL';
+  const EU=MODE==='EU'&&window.XRACE_EUROPA;
+  const src=EU?window.XRACE_EUROPA:[{c:MODE,p:{PL,CZ,SK}[MODE]||PL}];
+  const pad=EU?0:.35, all=src.flatMap(s=>s.p);
+  const LON0=EU?-11:Math.min(...all.map(p=>p[0]))-pad, LON1=EU?32.5:Math.max(...all.map(p=>p[0]))+pad;
+  const LAT1=EU?35:Math.min(...all.map(p=>p[1]))-pad, LAT0=EU?62.5:Math.max(...all.map(p=>p[1]))+pad;
+  const CX=Math.cos((LAT0+LAT1)/2*Math.PI/180), K=EU?900/((LON1-LON0)*CX):100;
   const proj=(lon,lat)=>[(lon-LON0)*CX*K,(LAT0-lat)*K];
-  const shapes={PL:PL.map(([a,b])=>proj(a,b)),CZ:CZ.map(([a,b])=>proj(a,b)),SK:SK.map(([a,b])=>proj(a,b))};
+  const shapes=src.map(s=>{const p=s.p.map(([a,b])=>proj(a,b));const xs=p.map(q=>q[0]),ys=p.map(q=>q[1]);return {c:s.c,p,b:[Math.min(...xs),Math.min(...ys),Math.max(...xs),Math.max(...ys)]};});
   const inPoly=(poly,x,y)=>{let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const [xi,yi]=poly[i],[xj,yj]=poly[j];if(((yi>y)!==(yj>y))&&(x<(xj-xi)*(y-yi)/(yj-yi)+xi))c=!c;}return c;};
-  const country=(x,y)=>{for(const k in shapes) if(inPoly(shapes[k],x,y)) return k; return null;};
-  const W=Math.ceil((24.35-LON0)*CX*K), H=Math.ceil((LAT0-47.6)*K);
+  const country=(x,y)=>{for(const s of shapes){const b=s.b;if(x>=b[0]&&x<=b[2]&&y>=b[1]&&y<=b[3]&&inPoly(s.p,x,y)) return s.c;} return null;};
+  const NET={PL:1,CZ:1,SK:1};   // countries with HART branches glow brighter on the Europe map
+  const W=Math.ceil((LON1-LON0)*CX*K), H=Math.ceil((LAT0-LAT1)*K);
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
-  const data=(window.XRACE_FILIE||[]).filter(f=>isFinite(f.lat)&&isFinite(f.lon)).map(f=>Object.assign({},f,{p:proj(f.lon,f.lat),hot:false}));
+  const data=(window.XRACE_FILIE||[]).filter(f=>isFinite(f.lat)&&isFinite(f.lon)&&(EU||f.kraj===MODE)).map(f=>Object.assign({},f,{p:proj(f.lon,f.lat),hot:false}));
 
   // dot grid, rows offset like a halftone screen; a one-dot gap is left along the borders between countries
   const STEP=9.5, G=STEP*.75, dots=[];
@@ -431,8 +457,10 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
       if([[G,0],[-G,0],[0,G],[0,-G]].some(([dx,dy])=>{const n=country(x+dx,y+dy);return n&&n!==c;})) continue;
       dots.push({x,y,c,d:x/W*900+Math.random()*200});
     }
-  [[18.56,54.70],[18.68,54.66],[18.79,54.62]].forEach(([a,b])=>{const [x,y]=proj(a,b);dots.push({x,y,c:'PL',d:x/W*900});});   // Hel
-  dots.forEach(o=>{o.near=data.map(f=>Math.hypot(o.x-f.p[0],o.y-f.p[1]));});
+  if(MODE==='PL') [[18.56,54.70],[18.68,54.66],[18.79,54.62]].forEach(([a,b])=>{const [x,y]=proj(a,b);dots.push({x,y,c:'PL',d:x/W*900});});   // Hel
+  dots.forEach(o=>{o.near=data.map(f=>Math.hypot(o.x-f.p[0],o.y-f.p[1]));
+    // Europe is cut out of a bigger landmass: dots fade towards the frame instead of ending in a straight edge
+    o.f=1; if(EU){const R=Math.min(W,H)*.22, e=Math.min(o.x,W-o.x,o.y,H-o.y); o.f=Math.pow(clamp(e/R),1.6);}});
 
   const cv=document.createElement('canvas'); cv.className='br-dots'; cv.setAttribute('aria-hidden','true'); box.insertBefore(cv,svg);
   const ctx=cv.getContext('2d');
@@ -454,7 +482,8 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
       for(let i=0;i<data.length;i++){const R=data[i].hot?HEAT*2.2:HEAT; heat=Math.max(heat,(1-o.near[i]/R)*(data[i].hot?1:.55));}
       const pd=Math.hypot(o.x-px,o.y-py), hov=pd<60?(1-pd/60)*.5:0;
       const e=Math.min(1,Math.max(0,heat)+hov);
-      const a=(.36+e*.64)*ap, r=(1.8+e*1.3)*(.4+.6*ap);
+      if(o.f<.02) continue;
+      const a=((EU&&!NET[o.c]?.2:.36)+e*.64)*ap*o.f, r=(1.8+e*1.3)*(.4+.6*ap);
       ctx.fillStyle=e>.6?`rgba(255,${(70+(e-.6)*280)|0},${(50+(e-.6)*180)|0},${a})`:`rgba(227,26,34,${a})`;
       ctx.beginPath(); ctx.arc(o.x,o.y,r,0,6.283); ctx.fill();
     }
@@ -473,7 +502,7 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     tip.style.left=(ox+f.p[0]*sc)+'px'; tip.style.top=(oy+f.p[1]*sc)+'px'; tip.classList.add('on');
   }
 
-  const NAMES={PL:'Polska',CZ:'Czechy',SK:'Słowacja'};
+  const NAMES=T.countries;
 
   // list grouped by country
   const groups={};
@@ -492,10 +521,11 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     let li=null;
     const on=v=>{f.hot=v;m.classList.toggle('hot',v);if(li)li.classList.toggle('hot',v);showTip(f,v);redraw();};
     m.addEventListener('mouseenter',()=>on(true)); m.addEventListener('mouseleave',()=>on(false));
-    m.addEventListener('click',()=>{ if(li){const u=li.parentElement;if(u.classList.contains('folded')){u.classList.remove('folded');const b=u.nextElementSibling;if(b&&b.classList.contains('br-more'))b.textContent='Zwiń listę';} li.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});} });
+    m.addEventListener('click',()=>{ if(li){const u=li.parentElement;if(u.classList.contains('folded')){u.classList.remove('folded');const b=u.nextElementSibling;if(b&&b.classList.contains('br-more'))b.textContent=T.collapse;} li.scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'});} });
     const ul=groups[f.kraj]; if(!ul) return;
     li=document.createElement('li'); li.className='br';
-    li.innerHTML=`<h4></h4>${f.nazwa?'<span class="nm"></span>':''}<span class="ad"></span>${f.tel?'<a class="tel"></a>':''}${f.email?'<a class="em"></a>':''}<a class="route" target="_blank" rel="noopener">Wyznacz trasę</a>`;
+    li.innerHTML=`<h4></h4>${f.nazwa?'<span class="nm"></span>':''}<span class="ad"></span>${f.tel?'<a class="tel"></a>':''}${f.email?'<a class="em"></a>':''}<a class="route" target="_blank" rel="noopener"></a>`;
+    li.querySelector('.route').textContent=T.route;
     li.querySelector('h4').textContent=f.miasto;
     if(f.nazwa) li.querySelector('.nm').textContent=f.nazwa;
     li.querySelector('.ad').textContent=f.adres||'';
@@ -513,7 +543,7 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     const items=[...ul.children]; if(items.length>4) ul.parentElement.classList.add('big'); if(items.length<=5) return;
     ul.classList.add('folded');
     const b=document.createElement('button'); b.type='button'; b.className='pill br-more';
-    const label=()=>{b.textContent=ul.classList.contains('folded')?`Pokaż wszystkie (${items.length})`:'Zwiń listę';};
+    const label=()=>{b.textContent=ul.classList.contains('folded')?fmt(T.showAll,{n:items.length}):T.collapse;};
     label();
     b.addEventListener('click',()=>{ul.classList.toggle('folded');label();if(ul.classList.contains('folded'))ul.parentElement.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});});
     ul.after(b);
@@ -531,8 +561,8 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
   const form=$('#xform'), sec=$('#kontakt'); if(!form||!sec) return;
   const steps=$$('#xform .fstep'), bars=$$('#xform .fprog i'), status=$('#fstatus'), btn=$('#xsend'), back=$('#fBack');
   const done=$('#fDone'), near=$('#fNear'), city=form.elements.miasto;
-  const TYP={sklep:['Sklep','sklepu'],warsztat:['Warsztat','warsztatu'],hurtownia:['Hurtownia','hurtowni']};
-  let step=0, branch=null;
+  const TYP=T.typ;
+  let step=0, branch=null; const t0=Date.now();   // t0: time the form appeared, bots send it within a second
 
   // desktop: once the visitor scrolls past ~35% of the section, the steps give way to the form card
   const wide=matchMedia('(min-width:1001px)');
@@ -559,10 +589,10 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     step=i;
     steps.forEach((s,k)=>{s.hidden=k!==i;});
     bars.forEach((b,k)=>b.classList.toggle('on',k<=i));
-    $('#fStepNo').textContent=`Krok ${i+1} z ${steps.length}`;
+    $('#fStepNo').textContent=fmt(T.step,{i:i+1,n:steps.length});
     $('#fStepName').textContent=steps[i].dataset.name;
     back.hidden=i===0;
-    btn.textContent=i===steps.length-1?'Wyślij zgłoszenie':'Dalej';
+    btn.textContent=i===steps.length-1?T.send:T.next;
     const t=TYP[form.elements.typ.value]||TYP.sklep;
     $('#fChip').textContent=t[0]; $('#fFor').textContent=t[1];
     say('');
@@ -575,30 +605,58 @@ $$('[data-track]').forEach(a=>a.addEventListener('click',()=>track('xrace_'+a.da
     const q=norm(city.value);
     branch=q.length>=3?(window.XRACE_FILIE||[]).find(f=>norm(f.miasto).startsWith(q)):null;
     near.hidden=!branch;
-    if(branch) near.innerHTML=`${PIN}<span>Najbliżej: ${branch.miasto}, ${branch.typ==='centrala'?'centrala':'filia'} HART</span>`;
+    if(branch) {near.innerHTML=`${PIN}<span></span>`;near.querySelector('span').textContent=fmt(T.near,{city:branch.miasto,type:branch.typ==='centrala'?T.hq:T.branch});}
   });
 
   // a field marked wrong is cleared as soon as it's fixed, not only on the next click
-  form.addEventListener('input',e=>{if(e.target.checkValidity&&e.target.checkValidity())e.target.removeAttribute('aria-invalid');});
+  form.addEventListener('input',e=>{if(e.target.checkValidity&&e.target.checkValidity()&&e.target.hasAttribute('aria-invalid')){e.target.removeAttribute('aria-invalid');say('');}});
   let started=false; form.addEventListener('focusin',()=>{if(!started){started=true;track('xrace_form_start');}});
   back.addEventListener('click',()=>show(step-1));
 
+  // validation: a message per field (T.v), shown under the step; the field gets a red frame and focus
+  const msgFor=i=>{const v=T.v||{};
+    if(i.name==='email') return i.validity.valueMissing?v.email:v.emailBad;
+    return v[i.name]||T.fill;};
+  // trimmed: a field with only spaces counts as empty
+  const invalid=i=>{if(i.type!=='checkbox'&&i.required&&!i.value.trim()) return true; return !i.checkValidity();};
+  function mark(i,msg){const k=steps.findIndex(s=>s.contains(i)); if(k>=0&&k!==step) show(k);
+    i.setAttribute('aria-invalid','true'); i.focus(); say(msg||msgFor(i),'err');}
+  // first wrong field in one step (Dalej) or in the whole form (send)
+  const firstBad=scope=>[...scope.querySelectorAll('input:not([type=radio]):not([name=www])')].find(invalid);
+  form.addEventListener('change',e=>{if(e.target.type==='checkbox'&&e.target.checked){e.target.removeAttribute('aria-invalid');say('');}});
+
   form.addEventListener('submit',e=>{
     e.preventDefault();
-    // no validation for now: every step moves on whatever is filled in
-    if(step<steps.length-1){show(step+1);track('xrace_form_step',{step:step+1});steps[step].querySelector('input:not([type=radio])')?.focus();return;}
+    if(step<steps.length-1){
+      const bad=firstBad(steps[step]); if(bad){mark(bad);return;}
+      show(step+1);track('xrace_form_step',{step:step+1});steps[step].querySelector('input:not([type=radio])')?.focus();return;
+    }
 
-    // TODO: wysyłka maili (Resend + autoresponder z email/autoresponder.html) po tłumaczeniach i akceptacji; na razie zgłoszenie nigdzie nie trafia, pokazujemy tylko potwierdzenie
-    const d=Object.fromEntries(new FormData(form).entries());
-    btn.disabled=true;
-    setTimeout(()=>{
-      btn.disabled=false;
-      track('xrace_form_submit',{typ:d.typ});
-      const where=branch?`do&nbsp;filii HART w&nbsp;${branch.miasto}`:'do&nbsp;najbliższej filii HART';
-      $('#fDoneTxt').innerHTML=`Witamy w&nbsp;gronie partnerów X-Race. Przekazaliśmy zgłoszenie ${where}, a&nbsp;handlowiec odezwie się${d.email?' na&nbsp;<b></b>':''} z&nbsp;ofertą dla Twojego ${(TYP[d.typ]||TYP.sklep)[1]}. Już niedługo Twoi klienci będą hamować później i&nbsp;wychodzić z&nbsp;zakrętów mocniej.`;
-      if(d.email) $('#fDoneTxt b').textContent=d.email;
-      form.hidden=true; done.hidden=false; done.focus();
-    },500);
+    // before sending: every field across the steps
+    const bad=firstBad(form);
+    if(bad){mark(bad);return;}
+
+    // sent to api/zgloszenie.php (HART gets the request, the customer an autoresponder in this page's language)
+    const fd=new FormData(form); fd.append('lang',document.documentElement.lang); fd.append('t',String(t0));
+    const d=Object.fromEntries(fd.entries());
+    const css=document.querySelector('link[href*="css/style.css"]');
+    const url=new URL('../api/zgloszenie.php',css?css.href:location.href).href;   // css/ sits in the site root, so api/ is next to it
+    btn.disabled=true; say(T.sending);
+    fetch(url,{method:'POST',body:fd,headers:{'Accept':'application/json'}})
+      .then(r=>r.json().catch(()=>({ok:false})).then(j=>{if(!r.ok||!j.ok) throw j; return j;}))
+      .then(()=>{
+        track('xrace_form_submit',{typ:d.typ});
+        const where=branch?fmt(T.doneTo,{city:branch.miasto}):T.doneNear;
+        $('#fDoneTxt').innerHTML=fmt(T.done,{where,email:d.email?T.doneEmail:'',for:(TYP[d.typ]||TYP.sklep)[1]});
+        if(d.email) $('#fDoneTxt b').textContent=d.email;
+        form.hidden=true; done.hidden=false; done.focus();
+      })
+      .catch(j=>{
+        // the server named the wrong fields: mark the first one exactly like the browser check does
+        const f=j&&j.error==='fields'&&j.fields&&form.elements[j.fields[0]];
+        if(f&&f.name){mark(f);return;}
+        say(j&&j.error==='limit'?T.limit:T.error,'err'); track('xrace_form_error',{error:(j&&j.error)||'network'});})
+      .finally(()=>{btn.disabled=false;});
   });
 
   $('#fReset').addEventListener('click',()=>{
